@@ -38,7 +38,6 @@ const CreatePost = () => {
             body: JSON.stringify({
                 url: imageData,
                 user: "User123", // <-- temporary user
-                description: "DESCRIPTION NOT NEEDED", // <-- description should be removed from backend 
                 tags: tags
             })
         })

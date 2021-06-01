@@ -23,16 +23,24 @@ function Home() {
             <Searchbar />
             <div className={Style.postContainer}>
                 {
-                    newPosts.map(post => (
-                        <div key={post['_id']} className={Style.wrapper}>
-                            <div className={Style.post}>
-                                <Link to={`/Post/${post['_id']}`}><img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/></Link>
-                                <p>User: {post.user}</p>
-                                <p>{post.description}</p>
+                  newPosts.map(post => (
+                      <div key={post['_id']} className={Style.wrapper}>
+                          <div className={Style.post}>
+                            <Link to={`/post/${post['_id']}`}>
+                              <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
+                            </Link>
+                            <div>
+                              <div>
                                 <p>{post.tags.map(tag => '#' + tag).join(' ')}</p>
+                                <p>By: {post.user}</p>
+                              </div>
+                              <Link to="/chat" className={Style.icon}>
+                                <i className='fas fa-comment-alt'></i>
+                              </Link>
                             </div>
-                        </div>
-                    )).sort((a, b) => b - a) // Reverse order, so newest posts at top
+                          </div>
+                      </div>
+                  )).sort((a, b) => b - a) // Reverse order, so newest posts at top
                 }
             </div>
         </div>

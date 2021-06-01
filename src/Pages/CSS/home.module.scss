@@ -17,6 +17,21 @@
     
             p {
                 color: white;
+                margin: 5px;;
+            }
+
+            > div {
+              display: flex;
+              align-items: center;
+              padding: 10px;
+            }
+
+            .icon {
+              color: #a371f7;
+              font-size: 28px;
+              padding: 4px;
+              margin-left: auto;
+              margin-right: 10px;
             }
         }
     }

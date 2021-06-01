@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser')
 
 const app = express()
 
-
 app.use(cookieParser())
 app.use(express.json({ limit: '100mb'}))
 app.use(cors( {
@@ -20,6 +19,9 @@ app.use('/', AuthRoute)
 // Post route
 const postRouter = require('./backend/routes/posts')
 app.use('/posts', postRouter)
+
+// Handle SSE
+require('./backend/sse-handler')(app)
 
 // Connect to DB
 mongoose.connect(

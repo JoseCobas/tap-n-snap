@@ -8,6 +8,7 @@ import Start from './Pages/Start'
 import Camera from './Pages/CameraPage'
 import CreatePost from './Pages/CreatePost'
 import Post from './Pages/Post'
+import Chat from './Pages/Chat'
 import LogOut from './Pages/LogOut'
 import Navbar from './Components/Navbar'
 import Footer from './Components/Footer'
@@ -29,6 +30,7 @@ function App() {
           <Route path='/camera' component={Camera}/>            
           <Route path='/createPost' component={CreatePost}/>
           <Route path='/logout' component={LogOut}/>
+          <Route path='/chat' component={Chat}/>
           <>
             <Navbar />
             <Route path='/home' component={Home}/>
