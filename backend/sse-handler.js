@@ -31,19 +31,40 @@ module.exports = app => {
     // message all connected clients that this 
     // client connected
     broadcast('connect', {
-      message: 'clients connected: ' + connections.length
+      message: 'client connected'
     })
   })
 
   // new message handler
-  // app.post('http://localhost:4000/api/message', (req, res) => {
   app.post('/api/message', (req, res) => {
-    let message = req.body
+
+    const message = new Message({
+      text: req.body.text,
+      author: req.body.author,
+      room: req.body.room
+    })
+
+    // Send message to DB
+    try {
+      res.send(message.save());
+    } catch (error) {
+      res.send({ message: error });
+    }
 
     // message all open client with new message
-    broadcast('new-message', message)
-    res.send('ok')
+    broadcast('new-message', req.body)
   })
+
+  // --------- get messages from DB ---------
+  app.get('/messages/:topicID', async (req, res) => {
+    try {
+      // get only the messages that match the room id
+      const messages = await Message.find({ room: req.params.topicID }); 
+      res.send(messages);
+    } catch (error) {
+      res.send({ message: error })
+    }
+  }) // ------------------------------------
 
   function broadcast(event, data) {
     // loop through all open connections and send
@@ -53,19 +74,16 @@ module.exports = app => {
     }
   }
 
-  // // Send an event when a something happens in the message db
+  // Send an event when a something happens in the message db
   // Message.watch().on('change', e => {
   //   console.log("OK", e);
-  //   console.log("connectons", connections.length);
-  //   connections.forEach(({ res }) =>
-  //     sendSSE(res, 'chatMessageUpdate', e))
+
+  //   broadcast('chatMessageUpdate', e);
   // });
 
   // Heartbeat (send 'empty' events with 20 second delays)
   // helps keep the connection alive
-  // setInterval(
-  //   () => connections.forEach(({ res }) =>
-  //     sendSSE(res, 'heartbeat', new Date())),
-  //   20000
-  // );
+  setInterval(() => {
+    broadcast('heartbeat', new Date())
+  }, 20000)
 };

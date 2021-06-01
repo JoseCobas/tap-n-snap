@@ -2,7 +2,15 @@ $text-grey: #707070;
 
 .Chat {
   height: 100vh;
+  position: relative;
 
+  .backArrow {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-size: 30px;
+    color: #fff;
+  }
   .topic {
     height: 30%;
     display: flex;
@@ -17,6 +25,7 @@ $text-grey: #707070;
 
     p {
       font-size: 14px;
+      word-break: break-word;
       color: $text-grey;
       margin: 4px;
     }
@@ -28,8 +37,8 @@ $text-grey: #707070;
       padding: 2px 10px 2px 10px;
       min-width: 50px;
       height: 20px;
-      margin-block-start: none !important;
-      margin-block-end: none !important;
+      // margin-block-start: none !important;
+      // margin-block-end: none !important;
       background-color: white;
       color: black;
       border-radius: 100px;

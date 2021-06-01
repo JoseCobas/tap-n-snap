@@ -15,7 +15,6 @@ function Post({match}) {
     }
 
     useEffect(() => fetchPost(), [match.params.id])
-    //useEffect(() => { fetchPost() }, [])
 
     return display ? (
         <div>

@@ -34,7 +34,7 @@ function Home() {
                                 <p>{post.tags.map(tag => '#' + tag).join(' ')}</p>
                                 <p>By: {post.user}</p>
                               </div>
-                              <Link to="/chat" className={Style.icon}>
+                              <Link to={`/chat/${post['_id']}`} className={Style.icon}>
                                 <i className='fas fa-comment-alt'></i>
                               </Link>
                             </div>
