@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Location from '../Components/Location';
 import Tag from '../Components/Tag';
 import Style from './CSS/chat.module.scss';
 
@@ -25,7 +26,7 @@ function Chat({ match }) {
       setTopic(topicData);
       messageParam = topicData.id;
     } else {
-      const room = type + '_' + id;
+      const room = type + '_' + id.replace(', ', '-').toLowerCase(); // turns location into: location_sweden-stockholm
 
       setTopic({ _id: room});
       messageParam = room;
@@ -48,7 +49,7 @@ function Chat({ match }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         text: newMessage,
-        author: 'User123',
+        author: 'User123', // <-- NEEDS TO BE CHANGED TO LGGOED IN USER
         room: topic._id
       })
     })
@@ -104,15 +105,13 @@ function Chat({ match }) {
           </div> ) :
 
         type === 'tag' ? (
-          <div className={Style.topic}>
-            <h2>#{id}</h2>
+          <div className={`${Style.topic} ${Style.altTopic}`}>
+            <p>#{id}</p>
           </div> ) :
 
         type === 'location' ? (
-          <div className={Style.topic}>
-            <h2>{id} 
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-            </h2>
+          <div className={`${Style.topic} ${Style.altTopic}`}>
+            <Location value={id} />
           </div> ) : null
       }
 

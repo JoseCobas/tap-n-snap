@@ -12,18 +12,17 @@ $text-grey: #707070;
     color: #fff;
   }
 
+  .altTopic {
+    color: $text-grey;
+    justify-self: center;
+  }
+
   .topic {
     height: 30%;
     display: flex;
     align-items: center;
     background-color: #30373D;
     padding: 5%;
-
-    h2 {
-      font-size: 36px;
-      color: $text-grey;
-      justify-self: center;
-    }
 
     img {
       width: 150px;

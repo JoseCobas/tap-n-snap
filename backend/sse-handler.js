@@ -38,17 +38,13 @@ module.exports = app => {
   // new message handler
   app.post('/api/message', (req, res) => {
 
-    const message = new Message({
-      text: req.body.text,
-      author: req.body.author,
-      room: req.body.room
-    })
+    const message = new Message(req.body)
 
     // Send message to DB
     try {
-      res.send(message.save());
+      res.send(message.save())
     } catch (error) {
-      res.send({ message: error });
+      res.send({ message: error })
     }
 
     // message all open client with new message

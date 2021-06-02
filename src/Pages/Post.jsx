@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Style from './CSS/post.module.scss';
+import Location from '../Components/Location';
 import Tag from '../Components/Tag';
 import { Link } from 'react-router-dom';
 
@@ -24,6 +25,7 @@ function Post({match}) {
                     <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
                     <div>
                       <div>
+                        <Location value="Stockholm, Sweden" />
                         <p>
                           {
                             post.tags.map(tag => (

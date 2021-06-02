@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Searchbar from '../Components/Searchbar'
+import Location from '../Components/Location'
 import Tag from '../Components/Tag'
 import Style from './CSS/home.module.scss';
 import { Link } from 'react-router-dom'
@@ -32,6 +33,7 @@ function Home() {
                             </Link>
                             <div>
                               <div>
+                                <Location value="Stockholm, Sweden" />
                                 <p>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
                                 <p>By: {post.user}</p>
                               </div>
