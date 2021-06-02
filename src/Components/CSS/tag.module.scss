@@ -1,0 +1,16 @@
+.Tag {
+  font-size: 0.9em;
+  padding: 3px 9px;
+  margin-right: 4px;
+  color: #000;
+  background-color: #FFF;
+  border-radius: 100px;
+
+  &::last-child {
+    margin-right: 0; 
+  }
+}
+
+.link {
+  text-decoration: none;
+}

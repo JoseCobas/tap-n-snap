@@ -30,7 +30,7 @@ function App() {
           <Route path='/camera' component={Camera}/>            
           <Route path='/createPost' component={CreatePost}/>
           <Route path='/logout' component={LogOut}/>
-          <Route path='/chat/:id' component={Chat}/>
+          <Route path='/chat/:type/:id' component={Chat}/>
           <>
             <Navbar />
             <Route path='/home' component={Home}/>

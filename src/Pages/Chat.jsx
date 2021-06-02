@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Tag from '../Components/Tag';
 import Style from './CSS/chat.module.scss';
 
 function Chat({ match }) {
+
+  const id = match.params.id;
+  const type = match.params.type;
 
   const [topic, setTopic] = useState([]); 
   const [display, setDisplay] = useState(false); 
@@ -11,13 +15,24 @@ function Chat({ match }) {
   const [allMessages, setAllMessages] = useState([]);
 
   const fetchData = async () => {
+    let messageParam; 
+
     // Fetch topic
-    const topicRes = await fetch('http://localhost:4000/posts/' + match.params.id);
-    const topicData = await topicRes.json();
-    setTopic(topicData);
+    if (type === 'post') {
+      const topicRes = await fetch('http://localhost:4000/posts/' + id);
+      const topicData = await topicRes.json();
+
+      setTopic(topicData);
+      messageParam = topicData.id;
+    } else {
+      const room = type + '_' + id;
+
+      setTopic({ _id: room});
+      messageParam = room;
+    }
 
     // Fetch messages
-    const messagesRes = await fetch('http://localhost:4000/messages/' + topicData._id);
+    const messagesRes = await fetch('http://localhost:4000/messages/' + messageParam);
     const messagesData = await messagesRes.json();
     setAllMessages(messagesData);
 
@@ -42,7 +57,6 @@ function Chat({ match }) {
   }
 
   const startSSE = () => {
-
     let sse = new EventSource('/api/sse');
 
     sse.addEventListener('connect', message => {
@@ -70,7 +84,7 @@ function Chat({ match }) {
     fetchData();
     let sse = startSSE();
 
-    return () => sse.close(); // !!! doesn't trigger req.on('close') in sse-handler.js !!! could be cause of memory leak
+    return () => sse.close(); 
   }, [])
 
   return display ? (
@@ -78,18 +92,32 @@ function Chat({ match }) {
       <Link to="/home" className={Style.backArrow}>
           <i className="fas fa-chevron-left"></i>
       </Link>
+      {  
+        /* Conditionally render chat header (topic) based on type of chat */
+        type === 'post' ? (
+          <div className={Style.topic}>
+            <img src={'/uploads/' + topic.url} alt={topic.tags.join(' ')} />
+            <div>
+              <p>Tags: { topic.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
+              <p>By: {topic.user}</p>
+            </div> 
+          </div> ) :
 
-      <div className={Style.topic}>
-        <img src={'/uploads/' + topic.url} alt={topic.tags.join(' ')} />
-        <div>
-          <p>Tags: { topic.tags.map(tag => <span key={tag}>{tag}</span>) }</p>
-          <p>By: {topic.user}</p>
-        </div>
-      </div>
+        type === 'tag' ? (
+          <div className={Style.topic}>
+            <h2>#{id}</h2>
+          </div> ) :
+
+        type === 'location' ? (
+          <div className={Style.topic}>
+            <h2>{id} 
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+            </h2>
+          </div> ) : null
+      }
 
       <div className={Style.chatSection}>
         {
-          // Not perfeclty unique key prop
           allMessages.map(message => (
             <div key={Math.random() + Date.now()} className={Style.message}>
               <span>{message.author}</span>

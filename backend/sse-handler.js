@@ -74,13 +74,6 @@ module.exports = app => {
     }
   }
 
-  // Send an event when a something happens in the message db
-  // Message.watch().on('change', e => {
-  //   console.log("OK", e);
-
-  //   broadcast('chatMessageUpdate', e);
-  // });
-
   // Heartbeat (send 'empty' events with 20 second delays)
   // helps keep the connection alive
   setInterval(() => {

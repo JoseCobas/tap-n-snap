@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Style from './CSS/post.module.scss';
+import Tag from '../Components/Tag';
 import { Link } from 'react-router-dom';
 
 function Post({match}) {
@@ -23,10 +24,16 @@ function Post({match}) {
                     <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
                     <div>
                       <div>
-                        <p>{post.tags.map(tag => '#' + tag).join(' ')}</p>
+                        <p>
+                          {
+                            post.tags.map(tag => (
+                              <Tag key={post._id + Math.random()} value={tag} />
+                            )) 
+                          }
+                        </p>
                         <p>By: {post.user}</p>
                       </div>
-                      <Link to="/chat" className={Style.icon}>
+                      <Link to={`/chat/post/${match.params.id}`} className={Style.icon}>
                         <i className='fas fa-comment-alt'></i>
                       </Link>
                     </div>

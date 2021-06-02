@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Searchbar from '../Components/Searchbar'
+import Tag from '../Components/Tag'
 import Style from './CSS/home.module.scss';
 import { Link } from 'react-router-dom'
 
@@ -31,7 +32,7 @@ function Home() {
                             </Link>
                             <div>
                               <div>
-                                <p>{post.tags.map(tag => '#' + tag).join(' ')}</p>
+                                <p>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
                                 <p>By: {post.user}</p>
                               </div>
                               <Link to={`/chat/${post['_id']}`} className={Style.icon}>
