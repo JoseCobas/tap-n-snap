@@ -70,7 +70,7 @@ const CreatePost = () => {
 
     return (
         <div>
-        <form name="textForm" className={Style.form} onSubmit={uploadPhoto}>
+        <form name="textForm" className={Style.form}>
             <div className={Style.wrapper}>
                 {imageData ? <img src={imageData} width="175" /> : <div className={Style.placeholder}><i className="fas fa-user fa-5x"></i></div>}
                 <div className={Style.buttonLayout}>
@@ -92,7 +92,7 @@ const CreatePost = () => {
                 </div>
             </div>
             <div className={Style.test}>
-                <input type="submit" value="&#xf067;" className={Style.inputButton, Style.inputSubmit} />
+                <input onClick={uploadPhoto} type="submit" value="&#xf067;" className={Style.inputButton, Style.inputSubmit} />
             </div>
             <Link to="/home" className={Style.iHelper}>
                 <i className="fas fa-chevron-left"></i>

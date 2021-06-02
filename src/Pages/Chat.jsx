@@ -41,30 +41,7 @@ function Chat({ match }) {
     setNewMessage(''); // Clear input field
   }
 
-  // const startSSE = () => {
-  //   let sse = new EventSource('/api/sse');
-
-  //   sse.addEventListener('connect', message => {
-  //     let data = JSON.parse(message.data)
-  //     console.log('[connect]', data);
-  //   })
-
-  //   sse.addEventListener('disconnect', message => {
-  //     let data = JSON.parse(message.data)
-  //     console.log('[disconnect]', data);
-  //   })
-
-  //   sse.addEventListener('new-message', message => {
-  //     let data = JSON.parse(message.data)
-  //     console.log('[new-message]', data);
-
-  //     setAllMessages(messages => [...messages, data]);
-  //   })
-  // }
-
-  useEffect(() => {
-    fetchData();
-    // startSSE();
+  const startSSE = () => {
 
     let sse = new EventSource('/api/sse');
 
@@ -84,6 +61,14 @@ function Chat({ match }) {
 
       setAllMessages(messages => [...messages, data]);
     })
+
+    return sse;
+  }
+
+
+  useEffect(() => {
+    fetchData();
+    let sse = startSSE();
 
     return () => sse.close(); // !!! doesn't trigger req.on('close') in sse-handler.js !!! could be cause of memory leak
   }, [])
