@@ -108,6 +108,9 @@ const CreatePost = () => {
     useEffect(() => {
         addTag()
         user()
+        if(window.imageSrc) {
+            console.log("Yes" , window.imageSrc)
+        }
     }, [tags]);
 
     useEffect(() => {
