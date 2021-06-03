@@ -20,6 +20,9 @@ app.use('/', AuthRoute)
 const postRouter = require('./backend/routes/posts')
 app.use('/posts', postRouter)
 
+// Handle SSE
+require('./backend/sse-handler')(app)
+
 const userRouter = require('./backend/routes/users')
 app.use('/users', userRouter)
 

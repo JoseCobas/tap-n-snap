@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Searchbar from '../Components/Searchbar'
-import Style from './CSS/home.module.scss';
+import Location from '../Components/Location'
+import Tag from '../Components/Tag'
+import Style from './CSS/home.module.scss'
 import { Link } from 'react-router-dom'
 import ReactPullToRefresh from 'react-pull-to-refresh'
 
@@ -40,17 +42,21 @@ function Home() {
                 {
                     newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
                         <div key={post['_id']} className={Style.wrapper}>
-                            <div className={Style.post}>
-                                <Link to={`/Post/${post['_id']}`}><img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/></Link>
-                                <div className={Style.info}>
-                                    <p>{post.user}</p>
-                                    <div className={Style.tagDiv}>
-                                    {
-                                        post.tags.map(tag => <p key={post + Math.random()} className={Style.tags}>{tag}</p>)
-                                    }
-                                    </div>
-                                </div>
+                          <div className={Style.post}>
+                            <Link to={`/post/${post['_id']}`}>
+                              <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
+                            </Link>
+                            <div>
+                              <div>
+                                { post.location ? <Location value={post.location}/> : null }
+                                <p>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
+                                <p>By: {post.user}</p>
+                              </div>
+                              <Link to={`/chat/post/${post['_id']}`} className={Style.icon}>
+                                <i className='fas fa-comment-alt'></i>
+                              </Link>
                             </div>
+                          </div>
                         </div>
                     ))
                 }

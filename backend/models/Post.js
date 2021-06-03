@@ -10,13 +10,11 @@ const PostSchema = Schema({
     type: String,
     required: true
   },
-  location: {
-    type: String
-  },
   date: {
     type: Date,
     default: Date.now,
   },
+  location: String,
   tags: [String]
 })
 

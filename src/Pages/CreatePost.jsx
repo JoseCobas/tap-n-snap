@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Style from './CSS/createPost.module.scss';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Navbar from '../Components/Navbar'
 
 const CreatePost = () => {
@@ -8,13 +8,13 @@ const CreatePost = () => {
     // State for Post data
     const [imageData, setImageData] = useState('');
 
-
     // State for geolocation coordinates
     const [lat, setLat] = useState('');
     const [long, setLong] = useState(''); 
+
     const [message, setMessage] = useState(false);
     const [name, setName] = useState('');
-    const [location, setLocation] = useState([]); 
+    const [location, setLocation] = useState(''); 
 
     // Tag states
     const [newTag, setNewTag] = useState('');
@@ -49,7 +49,7 @@ const CreatePost = () => {
     const fetchLocation = async () => {
         const response = await fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' +`${lat},${long}` + '&result_type=locality&key=AIzaSyBzpTdrJHHqA12vSEEGI-vvtn85FEC94hs')
         const data = await response.json();
-        setLocation(data['results'])
+        setLocation(data['results'][0].formatted_address)
 
         setMessage(true)
     }
@@ -69,8 +69,8 @@ const CreatePost = () => {
         // If no photo chosen do nothing
         if (!imageData) { return; }
 
-        const tester = document.getElementById('test').innerHTML;
-        console.log(tester)
+        // const tester = document.getElementById('test').innerHTML;
+        // console.log(tester)
 
         fetch("http://localhost:4000/posts", {
             method: "post",
@@ -80,9 +80,9 @@ const CreatePost = () => {
             },
             body: JSON.stringify({
                 url: imageData,
-                user: name,
-                location: tester,
-                tags: tags
+                user: name, 
+                tags: tags,
+                location: location
             })
         })
 
@@ -98,6 +98,12 @@ const CreatePost = () => {
         setNewTag('');
     }
 
+    function removeTag(tagToRemove) {
+        setTags(tags => (
+            tags.filter(tag => tag !== tagToRemove))
+        )
+    }
+
     // Re-render with callback
     useEffect(() => {
         addTag()
@@ -106,35 +112,31 @@ const CreatePost = () => {
 
     useEffect(() => {
         getLocation()
+        // fetchLocation() // <-- SEE IF IT WORKS WITHOUT
     }, [long]);
-
-    function removeTag(tagToRemove) {
-        setTags(tags => (
-            tags.filter(tag => tag !== tagToRemove))
-        )
-    }
 
     return (
         <div>
         <Navbar />
-        <form name="textForm" className={Style.form} onSubmit={uploadPhoto}>
+        <form name="textForm" className={Style.form}>
             <div className={Style.wrapper}>
                 {imageData ? <img src={imageData} width="175" /> : <div className={Style.placeholder}><i className="fas fa-user fa-5x"></i></div>}
                 <div className={Style.buttonLayout}>
                     <input type="file" name="file" accept="image/*" onChange={photoChosen} className={Style.inputFile} />
+                    {/* location ? <p key={location + Math.random()}>{location} <i className="fa fa-map-marker" aria-hidden="true"></i></p> : null */}
                     <input type="button" value="Take photo" className={Style.inputButton} />
                 </div>
             </div>
             <div className={Style.tags}>
                 <div className={Style.centerDiv}>
-                    {
-                    message ? location.map(location => <div key={location + Math.random()}><p id="test" className={Style.location} >{location.formatted_address} </p></div>)
-                            : <p id="test" className={Style.location}></p>
-                    }
+                  {
+                      message ? <div key={location + Math.random()}><p id="test" className={Style.location}>{location} </p></div>
+                              : <p id="test" className={Style.location}></p>
+                  }
                     <div className = {Style.getlocation}>
                         {
-                        message ? <button type="button" className={Style.getLocation} onClick={removeLocation} >Remove</button> 
-                                : <button type="button"  className={Style.getLocation} onClick={fetchLocation} >Get Location</button>
+                          message ? <button type="button" className={Style.getLocation} onClick={removeLocation}>Remove</button> 
+                                  : <button type="button"  className={Style.getLocation} onClick={fetchLocation}>Get Location</button>
                         }
                     </div>
                     <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags" onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
@@ -151,7 +153,7 @@ const CreatePost = () => {
                 </div>
             </div>
             <div className={Style.submit}>
-                <input type="submit" value="&#xf067;" className={Style.inputButton, Style.inputSubmit} />
+                <input onClick={uploadPhoto} type="submit" value="&#xf067;" className={`${Style.inputButton} ${Style.inputSubmit}`} />
             </div>
             <Link to="/home" className={Style.iHelper}>
                 <i className="fas fa-chevron-left"></i>

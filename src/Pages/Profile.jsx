@@ -32,7 +32,7 @@ function Profile() {
             const data = await res.json();
 
             const userPost = await data.map(post => (
-                post.user == name ? post.url : null 
+                post.user == name ? post : null 
             ))
 
             setUserPosts(userPost)
@@ -76,7 +76,11 @@ function Profile() {
         <hr/> 
         <div className={Style.imagesWrapper}> 
             {
-                userPosts.map(post => ( post == null ? null : <img key={post + Math.random()} src={`/uploads/${post}`} /> )) 
+              userPosts.map(post => ( post ? 
+                <Link to={`/post/${post['_id']}`} key={post + Math.random()}>
+                  <img key={post + Math.random()} src={`/uploads/${post.url}`} alt={post.tags.join(' ')}/> 
+                </Link> : null
+              )) 
             }
         </div> 
     </div> 
