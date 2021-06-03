@@ -5,29 +5,30 @@ import Tag from '../Components/Tag'
 import Style from './CSS/home.module.scss'
 import { Link } from 'react-router-dom'
 import ReactPullToRefresh from 'react-pull-to-refresh'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 function Home() {
-    const [newPosts, setNewPosts] = useState([]); 
+    // const [newPosts, setNewPosts] = useState([]); 
 
     const [display, setDisplay] = useState(null); 
     const [searchValue, setSearchValue] = useState('')
     
-    const fetchPosts = async () => {
-        const res = await fetch('http://localhost:4000/posts');
-        const data = await res.json();
+    // const fetchPosts = async () => {
+    //     const res = await fetch('http://localhost:4000/posts');
+    //     const data = await res.json();
 
-        setNewPosts(data);
-        setDisplay(true);
-    }
+    //     setNewPosts(data);
+    //     setDisplay(true);
+    // }
 
-    const fetchFilteredPosts = async (value) => {
-        let resUrl = value ? '/filter/' + value : '';
-        const res = await fetch('http://localhost:4000/posts/' + resUrl);
-        const data = await res.json();
+    // const fetchFilteredPosts = async (value) => {
+    //     let resUrl = value ? '/filter/' + value : '';
+    //     const res = await fetch('http://localhost:4000/posts/' + resUrl);
+    //     const data = await res.json();
 
-        console.log(data);
-        setNewPosts(data);
-    }
+    //     console.log(data);
+    //     setNewPosts(data);
+    // }
 
     function handleRefresh() {
         const success = true
@@ -38,13 +39,23 @@ function Home() {
         }
     }
 
-    useEffect(() => fetchPosts(), [])
+    // useEffect(() => fetchPosts(), [])
 
     return display ? (
         <ReactPullToRefresh onRefresh={handleRefresh} className="wrapperRefresh">
             <Searchbar search={fetchFilteredPosts} searchValue={searchValue} setSearchValue={setSearchValue} />
-            <div className={Style.postContainer}>
-                {
+            <div className={Style.postContainer} 
+                id="scrollableDiv"
+                    style={{
+                      height: 300,
+                      overflow: 'auto',
+                      display: 'flex',
+                      flexDirection: 'column-reverse',
+                    }}
+                >
+
+                    
+                {/* {
                     newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
                         <div key={post['_id']} className={Style.wrapper}>
                           <div className={Style.post}>
@@ -64,7 +75,22 @@ function Home() {
                           </div>
                         </div>
                     ))
-                }
+                } */}
+                <InfiniteScroll
+                    dataLength={this.state.items.length}
+                    next={this.fetchMoreData}
+                    style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
+                    inverse={true}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                    scrollableTarget="scrollableDiv"
+                  >
+                    {this.state.items.map((_, index) => (
+                      <div style={style} key={index}>
+                        div - #{index}
+                      </div>
+                    ))}
+                  </InfiniteScroll>
             </div>
         </ReactPullToRefresh>
     ) : null;
