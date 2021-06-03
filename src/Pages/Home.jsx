@@ -5,7 +5,7 @@ import Tag from '../Components/Tag'
 import Style from './CSS/home.module.scss'
 import { Link } from 'react-router-dom'
 import ReactPullToRefresh from 'react-pull-to-refresh'
-import InfiniteScroll from 'react-infinite-scroll-component'
+// import InfiniteScroll from 'react-infinite-scroll-component'
 
 function Home() {
     const [newPosts, setNewPosts] = useState([]); 
@@ -118,10 +118,11 @@ function Home() {
                                 </Link>
                               </div>
                             </div>
-                        ))
-                    ))
+                          </div>
+                        </div>
+                      ))
                     }
-              {/* </InfiniteScroll> */}
+                </div>
         </ReactPullToRefresh>
     ) : null;
 }

@@ -12,8 +12,7 @@ module.exports = app => {
     // listen for client disconnection
     // and remove the client's response
     // from the open connections list
-    req.on('close', () => {
-      connections = connections.filter(openRes => openRes != res)
+    req.on('close', () => { connections = connections.filter(openRes => openRes !== res)
       // message all open connections that a client disconnected
 
       broadcast('disconnect', {
