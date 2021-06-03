@@ -5,8 +5,6 @@ import Style from "./CSS/cameraPage.module.scss";
 
 
 const videoConstraints = {
-  width: 400,
-  height: 1200,
   facingMode: "user",
 };
 
@@ -35,9 +33,10 @@ const CameraPage = () => {
       <div className={Style.buttonContainer}>
 
         <div className={Style.buttonDiv}>
+        <button className={Style.cameraButton} onClick={capture}></button>
           {/* {imgSrc && <img className={Style.previewImage} src={imgSrc} />} */}
         </div>
-        <button className={Style.cameraButton} onClick={capture}></button>
+
       </div>
     </div>
   );
