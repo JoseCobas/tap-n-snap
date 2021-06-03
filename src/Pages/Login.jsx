@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Style from './CSS/login.module.scss'
 import { Redirect } from 'react-router'
-import { Link } from 'react-router-dom'
 import logoImg from '../img/logo.png'
 import DelayLink from 'react-delay-link'
 
