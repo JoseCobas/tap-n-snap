@@ -12,7 +12,7 @@ function Home() {
 
     const [display, setDisplay] = useState(null); 
     const [searchValue, setSearchValue] = useState('')
-    const [items, setitems] = useState(Array.from({ length: 2 }))
+    // const [items, setitems] = useState(Array.from({ length: 2 }))
     
     const fetchPosts = async () => {
         const res = await fetch('http://localhost:4000/posts');
@@ -40,22 +40,22 @@ function Home() {
         }
     }
 
-    const fetchMoreData = () => {
-      // a fake async api call like which sends
-      // 2 more records in 1 sec
-      setTimeout(() => {
-        this.setState({
-          items: items.concat(Array.from({ length: 2 }))
-        });
-      }, 1000);
-    };
+    // const fetchMoreData = () => {
+    //   // a fake async api call like which sends
+    //   // 2 more records in 1 sec
+    //   setTimeout(() => {
+    //     this.setState({
+    //       items: items.concat(Array.from({ length: 2 }))
+    //     });
+    //   }, 1000);
+    // };
 
     useEffect(() => fetchPosts(), [])
 
     return display ? (
         <ReactPullToRefresh onRefresh={handleRefresh} className="wrapperRefresh">
             <Searchbar search={fetchFilteredPosts} searchValue={searchValue} setSearchValue={setSearchValue} />
-                  <InfiniteScroll
+                  {/* <InfiniteScroll
                     dataLength={items.length}
                     next={fetchMoreData}
                     style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
@@ -63,7 +63,7 @@ function Home() {
                     hasMore={true}
                     loader={<h4>Loading...</h4>}
                     scrollableTarget="scrollableDiv"
-                  >
+                  > */}
                     {items.map((i, index) => (
                       newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
                             <div key={post['_id']} className={Style.wrapper}>
@@ -87,7 +87,7 @@ function Home() {
                     ))
                         
                     }
-              </InfiniteScroll>
+              {/* </InfiniteScroll> */}
         </ReactPullToRefresh>
     ) : null;
 }
