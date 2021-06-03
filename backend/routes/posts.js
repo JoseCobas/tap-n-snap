@@ -43,6 +43,7 @@ router.post('/', async (req, res) => {
     url: req.body.url,
     user: req.body.user,
     author: req.body.author,
+    likes: req.body.likes,
     location: req.body.location,
     tags: req.body.tags
   })
@@ -60,9 +61,7 @@ router.patch('/:postId', async (req, res) => {
     const updatedPost = await Post.updateOne(
       { _id: req.params.postId },
       { $set: {
-          user: req.body.user,
-          location: req.body.location,
-          tags: req.body.tags
+        likes: req.body.likes,
         } 
       }
     )

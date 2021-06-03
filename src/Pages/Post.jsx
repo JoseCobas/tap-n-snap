@@ -22,7 +22,7 @@ function Post({match}) {
         <div>
             <div className={Style.wrapper}>
                 <div className={Style.post}>
-                    <p className={Style.user}>By: {post.user}</p>
+                    <p className={Style.user}>{post.user}</p>
                     <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
                     <div>
                       <div>

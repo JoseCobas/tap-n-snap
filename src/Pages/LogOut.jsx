@@ -55,7 +55,7 @@ function LogOut() {
       return; 
     }
     try {
-    await fetch(`http://localhost:4000/users/${id}`, { // Make it so the fetch is not hard coded
+    await fetch(`http://localhost:4000/users/${id}`, {
       method: "PATCH",
       headers: {
         'Accept': 'application/json',
