@@ -1,7 +1,7 @@
 import React from "react";
 import Webcam from "react-webcam";
 import Style from "./CSS/cameraPage.module.scss";
-// import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 const videoConstraints = {
   facingMode: "user",
@@ -32,7 +32,9 @@ const CameraPage = () => {
       <div className={Style.buttonContainer}>
 
         <div className={Style.buttonDiv}>
-        <button className={Style.cameraButton} onClick={capture}></button>
+          <Link to="/createPost">
+            <button className={Style.cameraButton} onClick={capture}></button>
+          </Link>
           {/* {imgSrc && <img className={Style.previewImage} src={imgSrc} />} */}
         </div>
       </div>
