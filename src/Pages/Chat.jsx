@@ -40,7 +40,7 @@ function Chat({ match }) {
       const topicData = await topicRes.json();
 
       setTopic(topicData);
-      messageParam = topicData.id;
+      messageParam = topicData._id;
     } else {
       const room = type + '_' + id.replace(', ', '-').toLowerCase(); // turns location into: location_sweden-stockholm
 
@@ -74,7 +74,6 @@ function Chat({ match }) {
         room: topic._id
       })
     })
-
     setNewMessage(''); // Clear input field
   }
 

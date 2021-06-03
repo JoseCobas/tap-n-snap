@@ -4,8 +4,6 @@ import Style from "./CSS/cameraPage.module.scss";
 import { Link } from 'react-router-dom';
 
 const videoConstraints = {
-  width: 400,
-  height: 1200,
   facingMode: "user",
 };
 
