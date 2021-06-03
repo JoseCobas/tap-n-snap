@@ -104,10 +104,13 @@ function Chat({ match }) {
   useEffect(() => {
     user();
     fetchData();
+  }, [id, name])
+
+  useEffect(() => {
     let sse = startSSE();
 
     return () => sse.close(); 
-  }, [id, name])
+  }, [])
 
   return display ? (
     <div className={Style.Chat}>

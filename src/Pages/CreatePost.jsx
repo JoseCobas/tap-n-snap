@@ -14,6 +14,7 @@ const CreatePost = () => {
 
     const [message, setMessage] = useState(false);
     const [name, setName] = useState('');
+    const [author, setAuthor] = useState('');
     const [location, setLocation] = useState(''); 
 
     // Tag states
@@ -62,6 +63,7 @@ const CreatePost = () => {
   
         const content = await response.json();
         setName(content.name);
+        setAuthor(content._id);
     }
 
     const uploadPhoto = async e => {
@@ -80,7 +82,8 @@ const CreatePost = () => {
             },
             body: JSON.stringify({
                 url: imageData,
-                user: name, 
+                user: name,
+                author: author,
                 tags: tags,
                 location: location
             })
