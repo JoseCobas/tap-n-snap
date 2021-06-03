@@ -89,6 +89,7 @@ const CreatePost = () => {
                 url: url,
                 user: name,
                 author: author,
+                likes: 0,
                 tags: tags,
                 location: location
             })

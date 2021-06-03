@@ -11,7 +11,8 @@
         background-color: #30373D;
 
         .user {
-          padding-left: 10px;
+          padding-left: 0px;
+          margin: 5px;
         }
 
         img {
@@ -28,16 +29,34 @@
 
         > div {
           display: flex;
+          justify-content: space-between;
           align-items: center;
           padding: 10px;
         }
 
-        .icon {
-          color: #a371f7;
-          font-size: 28px;
-          padding: 4px;
-          margin-left: auto;
-          margin-right: 10px;
+        .flexTags {
+          display: flex;
+          flex-wrap: wrap;
+
+            .iconHeart {
+                color: #a371f7;
+                font-size: 30px;
+                padding: 8px;
+            }
+
+            .iconHeartLiked {
+                color: #a371f7;
+                font-size: 30px;
+                padding: 8px;
+                animation: like 0.5s;
+            }
+
+            .iconComment {
+                color: #a371f7;
+                font-size: 28px;
+                margin-top: 2px;
+                padding: 8px;
+            }
         }
     }
 }
@@ -48,5 +67,20 @@
   }
   100% {
       opacity: 10;
+  }
+}
+
+@keyframes like {
+  0% {
+      color: #a371f7;
+      transform: scale(1);
+  }
+  50% {
+      color: #b388fd;
+      transform: scale(1.1);
+  }
+  100% {
+      color: #a371f7;
+      transform: scale(1);
   }
 }

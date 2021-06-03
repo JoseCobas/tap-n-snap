@@ -11,7 +11,8 @@ function Home() {
     const [newPosts, setNewPosts] = useState([]); 
 
     const [display, setDisplay] = useState(null); 
-    const [searchValue, setSearchValue] = useState('')
+    const [searchValue, setSearchValue] = useState('');
+    // const [likedOrNot, setLikedOrNot] = useState(false);
     // const [items, setitems] = useState(Array.from({ length: 2 }))
     
     const fetchPosts = async () => {
@@ -40,6 +41,27 @@ function Home() {
         }
     }
 
+    const likePost = (e) => {
+      const arr = e.currentTarget.id.split(' ')
+
+      const id = arr[0]
+      const likes = parseInt(arr[1])
+      const numLikes = likes + 1;
+
+      // setLikedOrNot(true) // See comment further below in HTML
+
+      fetch(`http://localhost:4000/posts/${id}`, { 
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          likes: numLikes,
+        })
+      })
+    }
+
     // const fetchMoreData = () => {
     //   // a fake async api call like which sends
     //   // 2 more records in 1 sec
@@ -55,7 +77,8 @@ function Home() {
     return display ? (
         <ReactPullToRefresh onRefresh={handleRefresh} className="wrapperRefresh">
             <Searchbar search={fetchFilteredPosts} searchValue={searchValue} setSearchValue={setSearchValue} />
-                  {/* <InfiniteScroll
+            <div className={Style.postContainer}>
+              {/* <InfiniteScroll
                     dataLength={items.length}
                     next={fetchMoreData}
                     style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
@@ -63,29 +86,40 @@ function Home() {
                     hasMore={true}
                     loader={<h4>Loading...</h4>}
                     scrollableTarget="scrollableDiv"
-                  > */}
-                    {items.map((i, index) => (
-                      newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
-                            <div key={post['_id']} className={Style.wrapper}>
-                              <div className={Style.post}>
-                              <p className={Style.user}>{post.user}</p>
-                                <Link to={`/post/${post['_id']}`}>
-                                  <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
+                  > 
+                    {items.map((i, index) => (*/}
+                    {
+                    newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
+                        <div key={post['_id']} className={Style.wrapper}>
+                          <div className={Style.post}>
+                          <div>
+                            <p className={Style.user}>{post.user}</p>
+                            <p className={Style.user}>Likes: {post.likes}</p>
+                          </div>
+                            <Link to={`/post/${post['_id']}`}>
+                              <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
+                            </Link> 
+                            <div>
+                              <div>
+                                { post.location ? <Location value={post.location}/> : null }
+                                <p className={Style.tags}>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
+                              </div>
+                              <div className={Style.flexTags}>
+
+                                {/* Add something similar if enough time */}
+
+                                {/* {
+                                test ? <div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeartLiked} onClick={likePost}><i className="fas fa-heart"></i></div>
+                                :<div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeart} onClick={likePost}><i className="fas fa-heart"></i></div>
+                                } */}
+                                <div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeart} onClick={likePost}><i className="fas fa-heart"></i></div>
+                                <Link to={`/chat/post/${post['_id']}`} className={Style.iconComment}>
+                                  <i className='fas fa-comment-alt'></i> 
                                 </Link>
-                                <div>
-                                  <div>
-                                    { post.location ? <Location value={post.location}/> : null }
-                                    <p className={Style.tags}>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
-                                  </div>
-                                  <Link to={`/chat/post/${post['_id']}`} className={Style.icon}>
-                                    <i className='fas fa-comment-alt'></i>
-                                  </Link>
-                                </div>
                               </div>
                             </div>
                         ))
                     ))
-                        
                     }
               {/* </InfiniteScroll> */}
         </ReactPullToRefresh>
