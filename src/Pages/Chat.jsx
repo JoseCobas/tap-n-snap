@@ -86,7 +86,7 @@ function Chat({ match }) {
     let sse = startSSE();
 
     return () => sse.close(); 
-  }, [])
+  }, [id])
 
   return display ? (
     <div className={Style.Chat}>
@@ -99,6 +99,7 @@ function Chat({ match }) {
           <div className={Style.topic}>
             <img src={'/uploads/' + topic.url} alt={topic.tags.join(' ')} />
             <div>
+              { topic.location ? <Location value={topic.location} /> : null }
               <p>Tags: { topic.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
               <p>By: {topic.user}</p>
             </div> 

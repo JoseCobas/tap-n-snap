@@ -77,7 +77,7 @@ function Profile() {
         <div className={Style.imagesWrapper}> 
             {
               userPosts.map(post => ( post ? 
-                <Link to={`/post/${post['_id']}`}>
+                <Link to={`/post/${post['_id']}`} key={post + Math.random()}>
                   <img key={post + Math.random()} src={`/uploads/${post.url}`} alt={post.tags.join(' ')}/> 
                 </Link> : null
               )) 

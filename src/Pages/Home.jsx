@@ -52,7 +52,7 @@ function Home() {
                                 <p>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
                                 <p>By: {post.user}</p>
                               </div>
-                              <Link to={`/chat/${post['_id']}`} className={Style.icon}>
+                              <Link to={`/chat/post/${post['_id']}`} className={Style.icon}>
                                 <i className='fas fa-comment-alt'></i>
                               </Link>
                             </div>
