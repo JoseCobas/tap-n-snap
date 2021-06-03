@@ -11,6 +11,7 @@ function Home() {
 
     const [display, setDisplay] = useState(null); 
     const [searchValue, setSearchValue] = useState('');
+    // const [likedOrNot, setLikedOrNot] = useState(false);
     
     const fetchPosts = async () => {
         const res = await fetch('http://localhost:4000/posts');
@@ -45,9 +46,7 @@ function Home() {
       const likes = parseInt(arr[1])
       const numLikes = likes + 1;
 
-      console.log(id)
-      console.log(likes)
-      console.log(numLikes)
+      // setLikedOrNot(true) // See comment further below in HTML
 
       fetch(`http://localhost:4000/posts/${id}`, { 
         method: "PATCH",
@@ -83,10 +82,19 @@ function Home() {
                                 { post.location ? <Location value={post.location}/> : null }
                                 <p className={Style.tags}>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
                               </div>
-                              <div name={post.likes} id={post._id + " " + post.likes} className={Style.icon} onClick={likePost}><i className="fas fa-heart"></i></div>
-                              <Link to={`/chat/post/${post['_id']}`} className={Style.icon}>
-                                <i className='fas fa-comment-alt'></i> 
-                              </Link>
+                              <div className={Style.flexTags}>
+
+                                {/* Add something similar if enough time */}
+
+                                {/* {
+                                test ? <div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeartLiked} onClick={likePost}><i className="fas fa-heart"></i></div>
+                                :<div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeart} onClick={likePost}><i className="fas fa-heart"></i></div>
+                                } */}
+                                <div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeart} onClick={likePost}><i className="fas fa-heart"></i></div>
+                                <Link to={`/chat/post/${post['_id']}`} className={Style.iconComment}>
+                                  <i className='fas fa-comment-alt'></i> 
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
