@@ -22,18 +22,18 @@ function Post({match}) {
         <div>
             <div className={Style.wrapper}>
                 <div className={Style.post}>
+                    <p className={Style.user}>By: {post.user}</p>
                     <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
                     <div>
                       <div>
-                        { location ? <Location value={post.location}/> : null }
-                        <p>
+                        { post.location ? <Location value={post.location}/> : null }
+                        <p className={Style.tags}>
                           {
                             post.tags.map(tag => (
                               <Tag key={post._id + Math.random()} value={tag} />
                             )) 
                           }
                         </p>
-                        <p>By: {post.user}</p>
                       </div>
                       <Link to={`/chat/post/${match.params.id}`} className={Style.icon}>
                         <i className='fas fa-comment-alt'></i>

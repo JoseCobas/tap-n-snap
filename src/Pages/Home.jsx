@@ -48,14 +48,14 @@ function Home() {
                     newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
                         <div key={post['_id']} className={Style.wrapper}>
                           <div className={Style.post}>
+                          <p className={Style.user}>{post.user}</p>
                             <Link to={`/post/${post['_id']}`}>
                               <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
                             </Link>
                             <div>
                               <div>
                                 { post.location ? <Location value={post.location}/> : null }
-                                <p>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
-                                <p>By: {post.user}</p>
+                                <p className={Style.tags}>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
                               </div>
                               <Link to={`/chat/post/${post['_id']}`} className={Style.icon}>
                                 <i className='fas fa-comment-alt'></i>

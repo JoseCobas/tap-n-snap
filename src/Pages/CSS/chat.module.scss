@@ -72,6 +72,7 @@ $text-grey: #707070;
 
   .chatSection {
     height: auto;
+    animation: animate 1s;
 
     .message {
       width: 40%;
@@ -170,5 +171,17 @@ $text-grey: #707070;
         font-size: 16px;
       }
     }
+  }
+}
+
+@keyframes animate {
+  0% {
+      opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  100% {
+      opacity: 10;
   }
 }

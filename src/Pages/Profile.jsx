@@ -9,7 +9,9 @@ function Profile() {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [userPosts, setUserPosts] = useState('') 
+    const [id, setId] = useState('')
+    const [userPosts, setUserPosts] = useState([]) 
+    const [test, setTest] = useState(false)
 
     const user = async() => { 
         try {
@@ -21,6 +23,7 @@ function Profile() {
             const content = await response.json(); 
             setName(content.name); 
             setEmail(content.email);
+            setId(content._id);
         } catch(err) {
             console.log(err)
         }
@@ -32,15 +35,22 @@ function Profile() {
             const data = await res.json();
 
             const userPost = await data.map(post => (
-                post.user == name ? post : null 
+                post.author == id && post
             ))
+            
+            const compare = await userPost.filter(post => post != false).map(filteredPost => filteredPost)
 
+            if (compare == "") {
+                setTest(true)
+            }else {
+                setTest(false)
+            }
+            
             setUserPosts(userPost)
-            setDisplay(true)
         } catch(err) {
             console.log(err)
         }
-    } 
+    }
   
     useEffect(() => { 
         let mounted = true 
@@ -50,16 +60,20 @@ function Profile() {
             if (scrolled > 10){ setVisible(true) 
             } 
             else if (scrolled <= 10){ setVisible(false) } 
-        } }) 
+        } })
         
         user() 
         fetchPosts()
+
+        const timer = setTimeout(() => {
+            setDisplay(true) 
+        }, 200);
 
         return () => { 
             document.removeEventListener("scroll", listener) 
             mounted = false 
         } 
-    }, [visible, name]) 
+    }, [visible, name, id]) 
                         
     return display ? ( 
     <div> 
@@ -75,12 +89,12 @@ function Profile() {
         </div> 
         <hr/> 
         <div className={Style.imagesWrapper}> 
-            {
-              userPosts.map(post => ( post ? 
+            { test ? <p className={Style.empty}>Nothing here... Post something!</p> :
+              userPosts.map(post => ( post ?
                 <Link to={`/post/${post['_id']}`} key={post + Math.random()}>
                   <img key={post + Math.random()} src={`/uploads/${post.url}`} alt={post.tags.join(' ')}/> 
                 </Link> : null
-              )) 
+              ))
             }
         </div> 
     </div> 

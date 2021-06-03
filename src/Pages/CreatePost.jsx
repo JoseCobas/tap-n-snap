@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Style from './CSS/createPost.module.scss';
 import { Link } from 'react-router-dom';
-import Navbar from '../Components/Navbar';
 import { scale } from '../utilities/scale';
+import Navbar from '../Components/Navbar';
+import DelayLink from 'react-delay-link'
+import { useHistory } from 'react-router-dom';
 
 const CreatePost = () => {
 
@@ -15,11 +17,15 @@ const CreatePost = () => {
 
     const [message, setMessage] = useState(false);
     const [name, setName] = useState('');
+    const [author, setAuthor] = useState('');
     const [location, setLocation] = useState(''); 
+    const [active, setActive] = useState(false); 
 
     // Tag states
     const [newTag, setNewTag] = useState('');
     const [tags, setTags] = useState([]);
+
+    let history = useHistory();
 
     const photoChosen = () => {
         let file = document.forms.textForm.file.files[0];
@@ -31,6 +37,7 @@ const CreatePost = () => {
             setImageData(reader.result);
         }, false);
         reader.readAsDataURL(file);
+        setActive(true)
     }
 
     // Get coordinates for location
@@ -62,6 +69,7 @@ const CreatePost = () => {
   
         const content = await response.json();
         setName(content.name);
+        setAuthor(content._id);
     }
 
     const uploadPhoto = async e => {
@@ -69,7 +77,7 @@ const CreatePost = () => {
         // If no photo chosen do nothing
         if (!imageData) { return; }
 
-        const url = await scale(imageData);
+        const url = await scale(imageData, 900, 900, 0.75);
       
         fetch("http://localhost:4000/posts", {
             method: "post",
@@ -79,7 +87,8 @@ const CreatePost = () => {
             },
             body: JSON.stringify({
                 url: url,
-                user: name, 
+                user: name,
+                author: author,
                 tags: tags,
                 location: location
             })
@@ -87,6 +96,10 @@ const CreatePost = () => {
 
         console.log('Photo uploaded!');
         window.imageSrc = null; // Removes taken pic from window
+
+        const timer = setTimeout(() => {
+            history.push('/home')
+        }, 300);
     }
 
     const addTag = () => {
@@ -110,8 +123,9 @@ const CreatePost = () => {
         user()
         if(window.imageSrc) {
             setImageData(window.imageSrc)
+            setActive(true)
         }
-    }, [tags]);
+    }, [tags, active]);
 
     useEffect(() => {
         getLocation()
@@ -155,7 +169,7 @@ const CreatePost = () => {
                 </div>
             </div>
             <div className={Style.submit}>
-                <input onClick={uploadPhoto} type="submit" value="&#xf067;" className={`${Style.inputButton} ${Style.inputSubmit}`} />
+                <input onClick={uploadPhoto} type="button" value="&#xf067;" className={Style.inputSubmit} />
             </div>
             <Link to="/home" className={Style.iHelper}>
                 <i className="fas fa-chevron-left"></i>

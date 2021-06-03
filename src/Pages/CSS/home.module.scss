@@ -1,6 +1,6 @@
 .postContainer {
     padding-bottom: 50px;
-    animation: animate 0.7s;
+    animation: animate 0.3s;
 
     .wrapper {
         display: flex;
@@ -10,9 +10,17 @@
         .post {
             margin: 0px 15px 30px 15px;
             background-color: #30373D;
+
+            .user {
+                padding-left: 10px;
+            }
             
             img {
                 width: 100%;
+            }
+
+            .tags {
+                margin: 5px 0px 5px 0px;
             }
     
             p {

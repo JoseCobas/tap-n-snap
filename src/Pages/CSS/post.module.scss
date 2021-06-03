@@ -4,18 +4,26 @@
     display: flex;
     flex-wrap: wrap;
     align-content: center;
+    animation: animate 0.3s;
 
     .post {
         margin: 15px;
         background-color: #30373D;
 
+        .user {
+          padding-left: 10px;
+        }
+
         img {
             width: 100%;
         }
 
+        .tags {
+            margin: 10px 0px 5px 0px;
+        }
+
         p {
-            color: white;
-            margin: 5px;;
+          color: white;
         }
 
         > div {
@@ -32,4 +40,13 @@
           margin-right: 10px;
         }
     }
+}
+
+@keyframes animate {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 10;
+  }
 }
