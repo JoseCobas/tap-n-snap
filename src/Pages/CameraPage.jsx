@@ -3,7 +3,6 @@ import Webcam from "react-webcam";
 import Style from "./CSS/cameraPage.module.scss";
 // import {Link} from 'react-router-dom';
 
-
 const videoConstraints = {
   facingMode: "user",
 };
@@ -36,7 +35,6 @@ const CameraPage = () => {
         <button className={Style.cameraButton} onClick={capture}></button>
           {/* {imgSrc && <img className={Style.previewImage} src={imgSrc} />} */}
         </div>
-
       </div>
     </div>
   );

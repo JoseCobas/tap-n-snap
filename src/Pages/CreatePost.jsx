@@ -87,6 +87,7 @@ const CreatePost = () => {
         })
 
         console.log('Photo uploaded!');
+        window.imageSrc = null; // Removes taken pic from window
     }
 
     const addTag = () => {
@@ -108,9 +109,8 @@ const CreatePost = () => {
     useEffect(() => {
         addTag()
         user()
-
-        if (window.imageSrc) {
-            console.log ('Got it', window.imageSrc)
+        if(window.imageSrc) {
+            setImageData(window.imageSrc)
         }
     }, [tags]);
 
