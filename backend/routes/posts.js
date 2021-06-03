@@ -13,9 +13,14 @@ router.get('/', async (req, res) => {
 })
 
 // Get posts filtered by tags
-router.get('/filter/:tag', async (req, res) => {
+router.get('/filter/:search', async (req, res) => {
   try {
-    const posts = await Post.find({ tags: { $regex : '^' + req.params.tag } })
+    const posts = await Post.find({ 
+      $or: [
+        { tags: { $regex : new RegExp('^' + req.params.search, 'i') } },
+        { location:  { $regex : new RegExp(req.params.search, 'i') } }
+      ]
+    })
     res.send(posts)
   } catch (error) {
     res.send({ message: error })
