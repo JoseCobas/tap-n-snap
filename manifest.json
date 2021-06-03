@@ -1,0 +1,22 @@
+{
+    "name": "Tap & Snap",
+    "short_name": "T&S",
+    "description": "Ez tap to make a snap",
+    "theme_color": "#A371F7",
+    "background_color": "#21262E",
+    "display": "standalone",
+    "orientation": "portrait",
+    "start_url": "/",
+    "icons": [
+    {
+      "src": "/src/img/Logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/src/img/Logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+    ]
+  }

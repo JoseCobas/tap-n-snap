@@ -1,41 +1,41 @@
 .formSection {
-    padding-top: 120px;
-    padding-bottom: 35px;
+    padding-top: 50px;
+    padding-bottom: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
 
     .searchBar {
-        // margin-right: 10%;
-        border: 1px solid gray;
-        // border-right:0px;
+        border: none;
         border-radius: 20px 0px 0px 20px;
         padding: 10px 0px 7px 10px;
-        background-color:#eee;
+        background-color:#30373D;
+        outline: none;
+        color: white;
+        font-family: 'Arvo', serif;
+        width: 180px;
+    }
+
+    .iHelper {
+        i {
+            position: absolute;
+            top: 140px;
+            right: 125px;
+            font-size: 20px;
+            color: #868484;
+        }
     }
     
     .submitButton {
-        border: 1px solid gray;
+        font-family: 'Arvo', serif;
+        border: none;
+        margin-left: 2px;
         border-left: 0px;
         border-radius: 0px 20px 20px 0px;
-        background-color:#eee;
-        padding: 10px 10px 7px 10px;
+        background-color:#30373D;
+        padding: 8.5px 10px 8.5px 10px;
         height: auto;
-    }
-    
-    input[type='text']::placeholder {   
-        text-align: left;
-        
-    }
-    
-    input[type="search"]::-webkit-search-cancel-button {
-        -webkit-appearance: none;
-        cursor: pointer;
-        height: 12px;
-        width: 12px;
-        background-image: url("/src/img/cancel.svg");
-        margin-right:10px;
-        margin-bottom:5px;
+        color: #868484;
     }
 }
 

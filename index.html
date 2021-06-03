@@ -9,10 +9,24 @@
     <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
     <link rel="stylesheet" href="src/App.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="manifest" href="/manifest.json" />
     <title>Vite App</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <script>
+      if('serviceWorker' in navigator) {
+        console.log('Service Worker Supported')
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('../serviceWorker.js')
+            .then(reg => console.log('Service Worker: Registered'))
+            .catch(err => console.log(`Service Worker: Error: ${err}`))
+  })
+}
+      
+    </script>
   </body>
 </html>

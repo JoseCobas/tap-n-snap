@@ -48,6 +48,7 @@ $backgroundColor: #21262E;
             max-width: 100%;
             min-height: 150px;
             overflow: hidden;
+            margin-bottom: 5px;
 
             .inputButton {
                 font-family: $fontFamily;
@@ -80,8 +81,24 @@ $backgroundColor: #21262E;
             .inputFile[type=file] {
                 color: $darkAccent;
             }
+
+            .getLocation {
+                font-family: $fontFamily;
+                font-size: $fontSize;
+                width: 140px;
+                height: 50px;
+                border-radius: 100px;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                color: white;
+                background-color: #A371F7;
+            }
         }
     }
+
+
 
     .tags {
         padding-top: 20px;
@@ -153,11 +170,8 @@ $backgroundColor: #21262E;
     }
 }
 
-
-
-.test {
-    margin-top: 0px;
-    height: 300px;
+.submit {
+    margin-top: 100px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -176,5 +190,9 @@ $backgroundColor: #21262E;
     }
 }
 
-
-
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+-webkit-appearance:none;
+}

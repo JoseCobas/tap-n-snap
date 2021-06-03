@@ -2,50 +2,68 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.btn {
-    cursor: pointer;
-    margin: 0 auto;
-    background: #A371F7;
-    color: black;
-    width: 160px;
-    height: 50px;
-    font-size: large;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    border-radius: 30px;
-    margin-top: 100px;
-    margin-bottom: 10px;
+    animation: animate 2s;
 
+    .img {
+        margin-top: 100px;
+    }
+
+    .imgChange {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        transition: ease-in-out 1s;
+    }   
+    
+    .h4{
+        color: white;
+        font-weight: lighter;
+        margin: 20px;
+        margin-bottom: 80px;
+    }
+
+    .h4Change{
+        opacity: 0;
+        color: white;
+        font-weight: lighter;
+        margin: 20px;
+        margin-bottom: 80px;
+        transition: ease-in-out 0.5s;
+    }
+
+    .btn {
+        cursor: pointer;
+        background: #A371F7;
+        color: white;
+        width: 220px;
+        height: 65px;
+        font-family: 'Arvo', serif;
+        font-size: 20px;
+        border: none;
+        border-radius: 1000px;
+        margin-top: 80px;
+    }
+    
+    .btnChange {
+        opacity: 0;
+        cursor: pointer;
+        background: #A371F7;
+        color: white;
+        width: 220px;
+        height: 65px;
+        font-family: 'Arvo', serif;
+        font-size: 20px;
+        border: none;
+        border-radius: 1000px;
+        margin-top: 80px;
+        transition: ease-in-out 0.5s;
+    }
 }
 
-.h4{
-    color: white;
-    letter-spacing: 0.5pt;
-    font-weight: lighter;
-    margin: 50px;
+@keyframes animate {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 10;
+    }
 }
-/*
-.btnslo{
-    background: #A371F7;
-    color: black;
-    width: 160px;
-    height: 50px;
-    font-size: large;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    border-radius: 30px;
-    margin-top: 50px;
-    margin-bottom: 10px;
-}
-
-.btnsl{
-    background: #A371F7;
-    color: black;
-    width: 160px;
-    height: 50px;
-    font-size: large;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    border-radius: 30px;
-    margin-top: 100px;
-    margin-bottom: 10px;
-}
-*/
