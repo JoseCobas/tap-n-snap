@@ -12,6 +12,16 @@ router.get('/', async (req, res) => {
   }
 })
 
+// Get posts filtered by tags
+router.get('/:tag', async (req, res) => {
+  try {
+    const posts = await Post.find({ tags: { $regex : '^' + req.params.tag } })
+    res.send(posts)
+  } catch (error) {
+    res.send({ message: error })
+  }
+})
+
 // Get specific post
 router.get('/:postId', async (req, res) => {
   try {
