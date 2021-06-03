@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Style from './CSS/createPost.module.scss';
 import { Link } from 'react-router-dom';
-import Navbar from '../Components/Navbar'
+import { scale } from '../utilities/scale';
+import Navbar from '../Components/Navbar';
 import DelayLink from 'react-delay-link'
 import { useHistory } from 'react-router-dom';
 
@@ -33,7 +34,6 @@ const CreatePost = () => {
         // used for preview and also for saving the photo later
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-            // imageData = reader.result;
             setImageData(reader.result);
         }, false);
         reader.readAsDataURL(file);
@@ -77,9 +77,8 @@ const CreatePost = () => {
         // If no photo chosen do nothing
         if (!imageData) { return; }
 
-        // const tester = document.getElementById('test').innerHTML;
-        // console.log(tester)
-
+        const url = await scale(imageData, 900, 900, 0.75);
+      
         fetch("http://localhost:4000/posts", {
             method: "post",
             headers: {
@@ -87,7 +86,7 @@ const CreatePost = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                url: imageData,
+                url: url,
                 user: name,
                 author: author,
                 tags: tags,
@@ -97,7 +96,6 @@ const CreatePost = () => {
 
         console.log('Photo uploaded!');
         window.imageSrc = null; // Removes taken pic from window
-        // history.push('/home')
 
         const timer = setTimeout(() => {
             history.push('/home')
@@ -131,7 +129,6 @@ const CreatePost = () => {
 
     useEffect(() => {
         getLocation()
-        // fetchLocation() // <-- SEE IF IT WORKS WITHOUT
     }, [long]);
 
     return (
