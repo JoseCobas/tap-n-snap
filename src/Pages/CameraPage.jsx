@@ -1,6 +1,8 @@
 import React from "react";
 import Webcam from "react-webcam";
 import Style from "./CSS/cameraPage.module.scss";
+// import {Link} from 'react-router-dom';
+
 
 const videoConstraints = {
   width: 400,
@@ -15,7 +17,9 @@ const CameraPage = () => {
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
+    window.imageSrc = imageSrc;
   }, [webcamRef, setImgSrc]);
+  
 
   return (
     <div className={Style.wrapper}>
@@ -26,8 +30,7 @@ const CameraPage = () => {
         screenshotFormat="image/jpeg/jpg"
         videoConstraints={videoConstraints}
         audio={false} // mute sound
-        // width= {400}
-        // height= {1200}
+       
       />
       <div className={Style.buttonContainer}>
 
