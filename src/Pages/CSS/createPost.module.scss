@@ -11,6 +11,7 @@ $backgroundColor: #21262E;
     align-items: center;
     justify-content: space-evenly;
     flex-direction: column;
+    animation: animate 0.3s;
 
     .wrapper {
         background-color: $darkAccent;
@@ -187,6 +188,7 @@ $backgroundColor: #21262E;
     align-items: center;
     justify-content: space-evenly;
     flex-direction: column;
+    animation: animate 0.3s;
 
     .inputSubmit[type=submit] {
         font-family: FontAwesome;
@@ -197,5 +199,14 @@ $backgroundColor: #21262E;
         height: 100px;
         background-color: white;
         color: black;
+    }
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 10;
     }
 }

@@ -1,10 +1,10 @@
 .formSection {
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: animate 0.7s;
+    animation: animate 0.3s;
 
     .searchBar {
         border: none;
@@ -14,13 +14,14 @@
         outline: none;
         color: white;
         font-family: 'Arvo', serif;
+        font-size: 16px;
         width: 180px;
     }
 
     .iHelper {
         i {
             position: absolute;
-            top: 140px;
+            top: 132px;
             right: 125px;
             font-size: 20px;
             color: #868484;
@@ -35,7 +36,7 @@
         border-radius: 0px 20px 20px 0px;
         background-color:#30373D;
         padding: 8.5px 10px 8.5px 10px;
-        height: auto;
+        height: 36px;
         color: #868484;
     }
 }

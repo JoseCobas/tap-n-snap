@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
   const post = new Post({
     url: req.body.url,
     user: req.body.user,
+    author: req.body.author,
     location: req.body.location,
     tags: req.body.tags
   })
