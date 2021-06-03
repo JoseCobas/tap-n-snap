@@ -39,7 +39,6 @@ self.addEventListener('activate', (e) => {
       )
     })
   )
-
 })
 
 self.addEventListener('fetch', e => {

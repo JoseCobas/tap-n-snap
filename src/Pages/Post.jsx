@@ -25,7 +25,7 @@ function Post({match}) {
                     <img src={'/uploads/' + post.url} alt={post.tags.join(' ')}/>
                     <div>
                       <div>
-                        <Location value="Stockholm, Sweden" />
+                        { location ? <Location value={post.location}/> : null }
                         <p>
                           {
                             post.tags.map(tag => (

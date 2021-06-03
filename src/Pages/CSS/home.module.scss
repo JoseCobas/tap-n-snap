@@ -1,5 +1,6 @@
 .postContainer {
     padding-bottom: 50px;
+    animation: animate 0.7s;
 
     .wrapper {
         display: flex;
@@ -40,5 +41,14 @@
                 }
             }
         }
+    }
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 10;
     }
 }

@@ -70,9 +70,13 @@ hr {
     align-items: center;
     justify-content: center;
 
-    img {
+    > * {
         width: 45%;
-        height: auto;
         margin: 5px;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
     }
 }

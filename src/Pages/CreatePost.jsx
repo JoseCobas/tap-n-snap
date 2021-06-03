@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Location from '../Components/Location';
-import Tag from '../Components/Tag';
 import Style from './CSS/createPost.module.scss';
 import { Link } from 'react-router-dom';
+import Navbar from '../Components/Navbar'
 
 const CreatePost = () => {
 
@@ -34,34 +33,26 @@ const CreatePost = () => {
         reader.readAsDataURL(file);
     }
 
- // Get coordinates for location
+    // Get coordinates for location
     const getLocation =  () => {
-    navigator.geolocation.getCurrentPosition(position => {
-        setLat(position.coords.latitude)
-         setLong(position.coords.longitude)
-    }, err => console.log(err)
-    );
-    console.log(lat, long)
+        navigator.geolocation.getCurrentPosition(position => {
+            setLat(position.coords.latitude)
+            setLong(position.coords.longitude)
+        }, err => console.log(err));
     }
-
-    
-    const printLocation =  () => {
-        setMessage(true)
-    };
 
     const removeLocation = () => {
         setMessage(false)
     };
 
+    // Get location with coordinates
     const fetchLocation = async () => {
         const response = await fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' +`${lat},${long}` + '&result_type=locality&key=AIzaSyBzpTdrJHHqA12vSEEGI-vvtn85FEC94hs')
         const data = await response.json();
         setLocation(data['results'][0].formatted_address)
 
-        console.log(location)
+        setMessage(true)
     }
-
-
 
     const user = async() => {
         const response = await fetch('http://localhost:4000/user', {
@@ -70,7 +61,6 @@ const CreatePost = () => {
         });
   
         const content = await response.json();
-
         setName(content.name);
     }
 
@@ -79,7 +69,8 @@ const CreatePost = () => {
         // If no photo chosen do nothing
         if (!imageData) { return; }
 
-        console.log(location);
+        // const tester = document.getElementById('test').innerHTML;
+        // console.log(tester)
 
         fetch("http://localhost:4000/posts", {
             method: "post",
@@ -101,13 +92,10 @@ const CreatePost = () => {
     const addTag = () => {
         const boxValue = document.getElementById('tagBox').value;
 
-        if(boxValue == ""){
-            console.log(tags);
-            return;
-        } else {
-            setTags(tags => [...tags, newTag]);
-            setNewTag('');
-        }
+        if (boxValue == "") { return; } 
+
+        setTags(tags => [...tags, newTag]);
+        setNewTag('');
     }
 
     function removeTag(tagToRemove) {
@@ -124,40 +112,44 @@ const CreatePost = () => {
 
     useEffect(() => {
         getLocation()
-        fetchLocation()
+        // fetchLocation() // <-- SEE IF IT WORKS WITHOUT
     }, [long]);
 
     return (
         <div>
+        <Navbar />
         <form name="textForm" className={Style.form}>
             <div className={Style.wrapper}>
                 {imageData ? <img src={imageData} width="175" /> : <div className={Style.placeholder}><i className="fas fa-user fa-5x"></i></div>}
                 <div className={Style.buttonLayout}>
                     <input type="file" name="file" accept="image/*" onChange={photoChosen} className={Style.inputFile} />
-                    <input type="button" value="TAKE PHOTO" className={Style.inputButton} />
-                    
-                    <div className = {Style.getlocation}>
-                      {message ? <button onClick= {removeLocation} >Hide Location</button> : <button className = {Style.getLocation} onClick={fetchLocation} onClick={printLocation} >Get Location</button>}
-                        {message && <p className = {Style.location}>Your location is: {lat}, {long}</p> }
-                    </div>
-                        {/*
-                        location.map(location => <p key={location + Math.random()} >{location.formatted_address}</p>)
-                        */}
-                    { location ? <p key={location + Math.random()}>{location} <i className="fa fa-map-marker" aria-hidden="true"></i></p> : null }
+                    {/* location ? <p key={location + Math.random()}>{location} <i className="fa fa-map-marker" aria-hidden="true"></i></p> : null */}
+                    <input type="button" value="Take photo" className={Style.inputButton} />
                 </div>
             </div>
-
             <div className={Style.tags}>
-                <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags" onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
-                <button type="button" className={Style.icon} onClick={addTag}><i className="fas fa-check"></i></button>
-                <div className={Style.tagDiv}>
-                    {
-                        tags.map(tag => (
-                            <div key={Date.now() + Math.random()} onClick={() => removeTag(tag)}>
-                                {tag} <i className="fas fa-times"></i>
-                            </div>
-                        ))
-                    }
+                <div className={Style.centerDiv}>
+                  {
+                      message ? <div key={location + Math.random()}><p id="test" className={Style.location}>{location} </p></div>
+                              : <p id="test" className={Style.location}></p>
+                  }
+                    <div className = {Style.getlocation}>
+                        {
+                          message ? <button type="button" className={Style.getLocation} onClick={removeLocation}>Remove</button> 
+                                  : <button type="button"  className={Style.getLocation} onClick={fetchLocation}>Get Location</button>
+                        }
+                    </div>
+                    <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags" onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
+                    <button type="button" className={Style.icon} onClick={addTag}><i className="fas fa-check"></i></button>
+                    <div className={Style.tagDiv}>
+                        {
+                            tags.map(tag => (
+                                <div key={Date.now() + Math.random()} onClick={() => removeTag(tag)}>
+                                    {tag} <i className="fas fa-times"></i>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
             <div className={Style.submit}>

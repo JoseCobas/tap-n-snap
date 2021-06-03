@@ -27,8 +27,8 @@ router.post('/', async (req, res) => {
   const post = new Post({
     url: req.body.url,
     user: req.body.user,
-    tags: req.body.tags,
     location: req.body.location,
+    tags: req.body.tags
   })
 
   try {

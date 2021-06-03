@@ -49,9 +49,7 @@ const login = (req, res, next) => {
                         httpOnly: true
                     })  
                     res.json({
-                        message: 'Login Succesful!',
-                       // username: user.name,
-                       // token
+                        message: 'Login Succesful!'
                     }) 
                                       
                 }else{
@@ -88,7 +86,6 @@ const user = async (req, res, next) => {
 }
 
 const logout = (req, res, next) => {
-    //res.cookie('jwt', {maxAge: 0})
     res.clearCookie('jwt')
 
     res.json({

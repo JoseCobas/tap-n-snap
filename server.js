@@ -9,7 +9,7 @@ app.use(cookieParser())
 app.use(express.json({ limit: '100mb'}))
 app.use(cors( {
   credentials: true,
-  origin: ['http://localhost:3000']
+  origin: 'http://localhost:3000'
 }))
 
 // Authentication route
@@ -22,6 +22,9 @@ app.use('/posts', postRouter)
 
 // Handle SSE
 require('./backend/sse-handler')(app)
+
+const userRouter = require('./backend/routes/users')
+app.use('/users', userRouter)
 
 // Connect to DB
 mongoose.connect(

@@ -12,28 +12,36 @@ function Profile() {
     const [userPosts, setUserPosts] = useState('') 
 
     const user = async() => { 
-        const response = await fetch('http://localhost:4000/user', { 
-            headers: {'Content-Type': 'application/json'}, 
-            credentials: 'include' }
-        ); 
+        try {
+            const response = await fetch('http://localhost:4000/user', { 
+                headers: {'Content-Type': 'application/json'}, 
+                credentials: 'include' }
+            ); 
 
-        const content = await response.json(); 
-        setName(content.name); 
-        setEmail(content.email);
-    } 
+            const content = await response.json(); 
+            setName(content.name); 
+            setEmail(content.email);
+        } catch(err) {
+            console.log(err)
+        }
+    }
         
     const fetchPosts = async() => { 
-        const res = await fetch('http://localhost:4000/posts'); 
-        const data = await res.json();
+        try {
+            const res = await fetch('http://localhost:4000/posts'); 
+            const data = await res.json();
 
-        const userPost = await data.map(post => (
-            post.user == name ? post.url : null 
-        ))
+            const userPost = await data.map(post => (
+                post.user == name ? post : null 
+            ))
 
-        setUserPosts(userPost)
-        setDisplay(true)
+            setUserPosts(userPost)
+            setDisplay(true)
+        } catch(err) {
+            console.log(err)
+        }
     } 
-            
+  
     useEffect(() => { 
         let mounted = true 
         var listener = document.addEventListener("scroll", e => { 
@@ -68,7 +76,11 @@ function Profile() {
         <hr/> 
         <div className={Style.imagesWrapper}> 
             {
-                userPosts.map(post => ( post == null ? null : <img key={post + Math.random()} src={`../../public/uploads/${post}`} /> )) 
+              userPosts.map(post => ( post ? 
+                <Link to={`/post/${post['_id']}`}>
+                  <img key={post + Math.random()} src={`/uploads/${post.url}`} alt={post.tags.join(' ')}/> 
+                </Link> : null
+              )) 
             }
         </div> 
     </div> 

@@ -16,7 +16,6 @@ function Home() {
         const res = await fetch('http://localhost:4000/posts');
         const data = await res.json();
 
-        console.log(data)
         setNewPosts(data);
         setDisplay(true);
     }
@@ -49,7 +48,7 @@ function Home() {
                             </Link>
                             <div>
                               <div>
-                                <Location value={post.location}/>
+                                { post.location ? <Location value={post.location}/> : null }
                                 <p>{post.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
                                 <p>By: {post.user}</p>
                               </div>

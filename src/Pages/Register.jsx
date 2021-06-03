@@ -10,10 +10,12 @@ function Register() {
 
        const [userName, setUserName] = useState('');
        const [email, setEmail] = useState('');
+       const [emailMatch, setEmailMatch] = useState(false);
        const [password, setPassword] = useState('');
        const [passwordMatch, setPasswordMatch] = useState('');
        
        const [error, setError] = useState(false)
+       const [errorEmail, setErrorEmail] = useState(false)
        const [transition, setTransition] = useState(false)
        const [transitionImg, setTransitionImg] = useState(false)
 
@@ -23,9 +25,16 @@ function Register() {
 
        const uploadUser = async e => {
               e.preventDefault();
+              setError(false) 
+              setErrorEmail(false)
               // If any field is blank don't send request
               if (!userName && !email && !password) { return; }
 
+              if (emailMatch) {
+                     setErrorEmail(true)
+                     return;
+              }
+              
               if (password != passwordMatch) { 
                      setError(true) 
                      return; 
@@ -47,6 +56,7 @@ function Register() {
               .then(data => {
                      console.log(data.message)
                      setError(false) 
+                     setErrorEmail(false)
                      if (data.message === 'User Added succesfully!') {
                             setTransition(true)
                             setTransitionImg(true)
@@ -57,9 +67,23 @@ function Register() {
               }).catch(error => console.log('ERROR!', error));
        }
 
+       const fetchPosts = async () => {
+              const res = await fetch('http://localhost:4000/users');
+              const data = await res.json();
+
+              const compare = await data.filter(data => email === data.email).map(filteredEmail => filteredEmail)
+
+              if (compare == "") { 
+                     setEmailMatch(false);
+                     return; 
+              }
+              
+              setEmailMatch(true)
+       }
+
        useEffect(() => {
-              setError(false)
-        }, [])
+              fetchPosts()
+        }, [email])
 
        return isLoggedIn ? <Redirect to="/home" /> : (
               <div className={Style.wrapper}>
@@ -110,6 +134,7 @@ function Register() {
                                           onChange={e => setPasswordMatch(e.target.value)} autoComplete="off" required/><br />
                                    </div>
                                    { error ? <p className={Style.error} >Password does not match!</p> : null  }
+                                   { errorEmail ? <p className={Style.error} >Email already in use!</p> : null  }
                                    <button type="submit" className={Style.btn} >SIGN UP</button>
                             </form>
                      }
