@@ -21,7 +21,8 @@ function Home() {
     }
 
     const fetchFilteredPosts = async (value) => {
-      const res = await fetch('http://localhost:4000/posts/filter/' + value);
+        let resUrl = value ? '/filter/' + value : '';
+        const res = await fetch('http://localhost:4000/posts/' + resUrl);
         const data = await res.json();
 
         console.log(data);
