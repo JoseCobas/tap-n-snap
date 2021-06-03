@@ -5,12 +5,12 @@ const Searchbar = ({ search, searchValue, setSearchValue }) => {
 
   const submitHandler = e => {
     e.preventDefault();
-    search();
+    search(searchValue);
   }
 
   const clearSearchHandler = () => {
     setSearchValue(''); 
-    search();
+    search('');
   }
 
   return (

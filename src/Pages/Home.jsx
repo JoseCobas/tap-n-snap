@@ -20,8 +20,8 @@ function Home() {
         setDisplay(true);
     }
 
-    const fetchFilteredPosts = async () => {
-        const res = await fetch('http://localhost:4000/posts/' + searchValue);
+    const fetchFilteredPosts = async (value) => {
+        const res = await fetch('http://localhost:4000/posts/' + value);
         const data = await res.json();
 
         setNewPosts(data);
