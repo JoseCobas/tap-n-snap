@@ -23,14 +23,13 @@ router.get('/:userId', async (req, res) => {
 })
 
 // Update user
-router.put('/:userId', async (req, res) => {
+router.patch('/:userId', async (req, res) => {
   try {
     const updatedUser = await User.updateOne(
       { _id: req.params.userId },
       { $set: {
           name: req.body.name,
-          email: req.body.email,
-          password: req.body.password
+          email: req.body.email
         } 
       }
     )

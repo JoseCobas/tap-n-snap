@@ -14,9 +14,25 @@ function Chat({ match }) {
 
   const [newMessage, setNewMessage] = useState('');
   const [allMessages, setAllMessages] = useState([]);
+  const [name, setName] = useState('');
+
+  const user = async() => { 
+    try {
+        const response = await fetch('http://localhost:4000/user', { 
+            headers: {'Content-Type': 'application/json'}, 
+            credentials: 'include' }
+        ); 
+
+        const content = await response.json(); 
+        setName(content.name);
+    } catch(err) {
+        console.log(err)
+    }
+  }
 
   const fetchData = async () => {
     let messageParam; 
+    user();
 
     // Fetch topic
     if (type === 'post') {
@@ -24,7 +40,7 @@ function Chat({ match }) {
       const topicData = await topicRes.json();
 
       setTopic(topicData);
-      messageParam = topicData.id;
+      messageParam = topicData._id;
     } else {
       const room = type + '_' + id.replace(', ', '-').toLowerCase(); // turns location into: location_sweden-stockholm
 
@@ -44,16 +60,20 @@ function Chat({ match }) {
   const postMessage = (e) => {
     e.preventDefault();
 
+    if(!newMessage) {
+      console.log("No message")
+      return;
+    }
+
     fetch('/api/message', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         text: newMessage,
-        author: 'User123', // <-- NEEDS TO BE CHANGED TO LGGOED IN USER
+        author: name,
         room: topic._id
       })
     })
-
     setNewMessage(''); // Clear input field
   }
 
@@ -82,11 +102,12 @@ function Chat({ match }) {
 
 
   useEffect(() => {
+    user();
     fetchData();
     let sse = startSSE();
 
     return () => sse.close(); 
-  }, [id])
+  }, [id, name])
 
   return display ? (
     <div className={Style.Chat}>
@@ -100,14 +121,14 @@ function Chat({ match }) {
             <img src={'/uploads/' + topic.url} alt={topic.tags.join(' ')} />
             <div>
               { topic.location ? <Location value={topic.location} /> : null }
-              <p>Tags: { topic.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
+              <p>{ topic.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
               <p>By: {topic.user}</p>
             </div> 
           </div> ) :
 
         type === 'tag' ? (
           <div className={`${Style.topic} ${Style.altTopic}`}>
-            <p>#{id}</p>
+            <p className={Style.tagStyle}>{id}</p>
           </div> ) :
 
         type === 'location' ? (
@@ -118,18 +139,30 @@ function Chat({ match }) {
 
       <div className={Style.chatSection}>
         {
-          allMessages.map(message => (
-            <div key={Math.random() + Date.now()} className={Style.message}>
+          allMessages.map(message => ( message.author == name ?
+            <div key={Math.random() + Date.now()} className={Style.messageRight}>
+              <div className={Style.messageBox}>
+                <span>{message.author}</span>
+                <div className={Style.snapMessage}>
+                  <p>{message.text}</p>
+                </div>
+              </div>
+            </div>
+            :<div key={Math.random() + Date.now()} className={Style.message}>
               <span>{message.author}</span>
-              <p>{message.text}</p>
+              <div className={Style.snapMessage}>
+                <p>{message.text}</p>
+              </div>
             </div>
           ))
         }
       </div>
 
       <form onSubmit={postMessage}>
-        <input type="text" onChange={e => setNewMessage(e.target.value)} value={newMessage} />
-        <button type="submit">Send</button>
+        <div className={Style.align} >
+          <input placeholder="Message..." type="text" onChange={e => setNewMessage(e.target.value)} value={newMessage} />
+          <button type="submit">Send</button>
+        </div>
       </form>
     </div>
   ) : null;

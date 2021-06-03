@@ -1,10 +1,9 @@
 import React from "react";
 import Webcam from "react-webcam";
 import Style from "./CSS/cameraPage.module.scss";
+import { Link } from 'react-router-dom';
 
 const videoConstraints = {
-  width: 400,
-  height: 1200,
   facingMode: "user",
 };
 
@@ -15,6 +14,8 @@ const CameraPage = () => {
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
+
+    window.imageSrc = imageSrc;
   }, [webcamRef, setImgSrc]);
 
   return (
@@ -34,7 +35,9 @@ const CameraPage = () => {
         <div className={Style.buttonDiv}>
           {/* {imgSrc && <img className={Style.previewImage} src={imgSrc} />} */}
         </div>
-        <button className={Style.cameraButton} onClick={capture}></button>
+        <Link to="/createPost">
+          <button className={Style.cameraButton} onClick={capture}></button>
+        </Link>
       </div>
     </div>
   );
