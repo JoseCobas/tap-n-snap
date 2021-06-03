@@ -10,7 +10,7 @@ function Home() {
     const [newPosts, setNewPosts] = useState([]); 
 
     const [display, setDisplay] = useState(null); 
-    const [search, newSearch] = useState('');
+    const [searchValue, setSearchValue] = useState('')
     
     const fetchPosts = async () => {
         const res = await fetch('http://localhost:4000/posts');
@@ -20,7 +20,12 @@ function Home() {
         setDisplay(true);
     }
 
-    useEffect(() => fetchPosts(), [])
+    const fetchFilteredPosts = async () => {
+        const res = await fetch('http://localhost:4000/posts/' + searchValue);
+        const data = await res.json();
+
+        setNewPosts(data);
+    }
 
     function handleRefresh() {
         const success = true
@@ -31,13 +36,11 @@ function Home() {
         }
     }
 
-    function logSearch() {
-        console.log(search)
-    }
+    useEffect(() => fetchPosts(), [])
 
     return display ? (
         <ReactPullToRefresh onRefresh={handleRefresh} className="wrapperRefresh">
-            <Searchbar newSearch={newSearch} logSearch={logSearch}/>
+            <Searchbar search={fetchFilteredPosts} searchValue={searchValue} setSearchValue={setSearchValue} />
             <div className={Style.postContainer}>
                 {
                     newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
