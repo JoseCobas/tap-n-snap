@@ -6,7 +6,6 @@ import Style from "./CSS/cameraPage.module.scss";
 
 const videoConstraints = {
   facingMode: "user",
-  height: 600
 };
 
 const CameraPage = () => {
@@ -24,7 +23,7 @@ const CameraPage = () => {
     <div className={Style.wrapper}>
       <Webcam
         class
-        // mirrored={true}
+        mirrored={true}
         ref={webcamRef}
         screenshotFormat="image/jpeg/jpg"
         videoConstraints={videoConstraints}
