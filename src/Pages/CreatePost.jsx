@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Style from './CSS/createPost.module.scss';
 import { Link } from 'react-router-dom';
 import Navbar from '../Components/Navbar'
+import DelayLink from 'react-delay-link'
+import { useHistory } from 'react-router-dom';
 
 const CreatePost = () => {
 
@@ -16,10 +18,13 @@ const CreatePost = () => {
     const [name, setName] = useState('');
     const [author, setAuthor] = useState('');
     const [location, setLocation] = useState(''); 
+    const [active, setActive] = useState(false); 
 
     // Tag states
     const [newTag, setNewTag] = useState('');
     const [tags, setTags] = useState([]);
+
+    let history = useHistory();
 
     const photoChosen = () => {
         let file = document.forms.textForm.file.files[0];
@@ -32,6 +37,7 @@ const CreatePost = () => {
             setImageData(reader.result);
         }, false);
         reader.readAsDataURL(file);
+        setActive(true)
     }
 
     // Get coordinates for location
@@ -91,6 +97,11 @@ const CreatePost = () => {
 
         console.log('Photo uploaded!');
         window.imageSrc = null; // Removes taken pic from window
+        // history.push('/home')
+
+        const timer = setTimeout(() => {
+            history.push('/home')
+        }, 300);
     }
 
     const addTag = () => {
@@ -114,8 +125,9 @@ const CreatePost = () => {
         user()
         if(window.imageSrc) {
             setImageData(window.imageSrc)
+            setActive(true)
         }
-    }, [tags]);
+    }, [tags, active]);
 
     useEffect(() => {
         getLocation()
@@ -160,7 +172,7 @@ const CreatePost = () => {
                 </div>
             </div>
             <div className={Style.submit}>
-                <input onClick={uploadPhoto} type="submit" value="&#xf067;" className={`${Style.inputButton} ${Style.inputSubmit}`} />
+                <input onClick={uploadPhoto} type="button" value="&#xf067;" className={Style.inputSubmit} />
             </div>
             <Link to="/home" className={Style.iHelper}>
                 <i className="fas fa-chevron-left"></i>
