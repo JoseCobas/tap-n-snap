@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Style from './CSS/createPost.module.scss';
 import { Link } from 'react-router-dom';
-import Navbar from '../Components/Navbar'
+import Navbar from '../Components/Navbar';
+import { scale } from '../utilities/scale';
 
 const CreatePost = () => {
 
@@ -27,7 +28,6 @@ const CreatePost = () => {
         // used for preview and also for saving the photo later
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-            // imageData = reader.result;
             setImageData(reader.result);
         }, false);
         reader.readAsDataURL(file);
@@ -69,9 +69,8 @@ const CreatePost = () => {
         // If no photo chosen do nothing
         if (!imageData) { return; }
 
-        // const tester = document.getElementById('test').innerHTML;
-        // console.log(tester)
-
+        const url = await scale(imageData);
+      
         fetch("http://localhost:4000/posts", {
             method: "post",
             headers: {
@@ -79,7 +78,7 @@ const CreatePost = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                url: imageData,
+                url: url,
                 user: name, 
                 tags: tags,
                 location: location
@@ -116,7 +115,6 @@ const CreatePost = () => {
 
     useEffect(() => {
         getLocation()
-        // fetchLocation() // <-- SEE IF IT WORKS WITHOUT
     }, [long]);
 
     return (
