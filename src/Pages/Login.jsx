@@ -82,7 +82,7 @@ function Login() {
             </div>
             <div className={Style.inputFieldPassword}>
               <i className="fas fa-key" />
-              <input type="password" placeholder="Password..." className={Style.inputPassword} onChange={e => setPassword(e.target.value)} autoComplete="off" required/>
+              <input type="password" pattern=".{8,}" title="Eigth or more characters" placeholder="Password..." className={Style.inputPassword} onChange={e => setPassword(e.target.value)} autoComplete="off" required/>
             </div>
             { correctDetails ? <p className={Style.error} >Wrong email or password!</p> : null }
             <button type="submit" className={Style.btn} >SIGN IN</button>

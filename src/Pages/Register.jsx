@@ -101,12 +101,12 @@ function Register() {
                                    </div>
                                    <div className={Style.inputFieldPass}>
                                           <i className="fas fa-key" ></i>      
-                                          <input type="password" placeholder="Password..." className={Style.inputRest} 
+                                          <input type="password" pattern=".{8,}" title="Eigth or more characters" placeholder="Password..." className={Style.inputRest} 
                                           onChange={e => setPassword(e.target.value)} autoComplete="off"/><br />
                                    </div>
                                    <div className={Style.inputFieldConPass}>
                                           <i className="fas fa-key" ></i>     
-                                          <input type="password" placeholder="Confirm Password..." className={Style.inputRest} 
+                                          <input type="password" pattern=".{8,}" title="Eigth or more characters" placeholder="Confirm Password..." className={Style.inputRest} 
                                           onChange={e => setPasswordMatch(e.target.value)} autoComplete="off"/><br />
                                    </div>
                                    <button type="submit" className={Style.btn} >SIGN UP</button>
@@ -124,12 +124,12 @@ function Register() {
                                    </div>
                                    <div className={Style.inputFieldPass}>
                                           <i className="fas fa-key" ></i>      
-                                          <input type="password" placeholder="Password..." className={Style.inputRest} 
+                                          <input type="password" pattern=".{8,}" title="Eigth or more characters" placeholder="Password..." className={Style.inputRest} 
                                           onChange={e => setPassword(e.target.value)} autoComplete="off" required/><br />
                                    </div>
                                    <div className={Style.inputFieldConPass}>
                                           <i className="fas fa-key" ></i>     
-                                          <input type="password" placeholder="Confirm Password..." className={Style.inputRest} 
+                                          <input type="password" pattern=".{8,}" title="Eigth or more characters" placeholder="Confirm Password..." className={Style.inputRest} 
                                           onChange={e => setPasswordMatch(e.target.value)} autoComplete="off" required/><br />
                                    </div>
                                    { error ? <p className={Style.error} >Password does not match!</p> : null  }
