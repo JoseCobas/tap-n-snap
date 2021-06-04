@@ -35,6 +35,9 @@ const CameraPage = () => {
           <Link to="/createPost">
             <button className={Style.cameraButton} onClick={capture}></button>
           </Link>
+          <Link to="/home" className={Style.iHelper}>
+                <i className="fas fa-chevron-left"></i>
+            </Link>
           {/* {imgSrc && <img className={Style.previewImage} src={imgSrc} />} */}
         </div>
       </div>
