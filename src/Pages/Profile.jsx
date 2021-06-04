@@ -81,11 +81,10 @@ function Profile() {
         <Link to="/logout"> <i className="fas fa-cog fa-2x"></i> </Link> 
         </div> 
         <div className={Style.wrapper}> 
-            <img className={Style.profileImg} src={Image}></img> 
             <div className={Style.profileInfo}> 
-            <p className={Style.h1}>{name}</p> 
-            <p>{email}</p> 
-        </div> 
+                <p className={Style.h1}>{name}</p> 
+                <p>{email}</p> 
+            </div> 
         </div> 
         <hr/> 
         <div className={Style.imagesWrapper}> 
