@@ -21,7 +21,6 @@ const CameraPage = () => {
   return (
     <div className={Style.wrapper}>
       <Webcam
-        class
         mirrored={true}
         ref={webcamRef}
         screenshotFormat="image/jpeg/jpg"
