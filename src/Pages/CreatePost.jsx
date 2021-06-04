@@ -118,6 +118,11 @@ const CreatePost = () => {
         )
     }
 
+    function redirect() {
+        history.push('/camera')
+        window.imageSrc = null;
+    }
+
     // Re-render with callback
     useEffect(() => {
         addTag()
@@ -141,7 +146,7 @@ const CreatePost = () => {
                 <div className={Style.buttonLayout}>
                     <input type="file" name="file" accept="image/*" onChange={photoChosen} className={Style.inputFile} />
                     {/* location ? <p key={location + Math.random()}>{location} <i className="fa fa-map-marker" aria-hidden="true"></i></p> : null */}
-                    <input type="button" value="Take photo" className={Style.inputButton} />
+                    <input type="button" value="Take photo" className={Style.inputButton} onClick={redirect}/>
                 </div>
             </div>
             <div className={Style.tags}>
