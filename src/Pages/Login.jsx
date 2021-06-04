@@ -51,7 +51,7 @@ function Login() {
         }, 700);
       }
     })
-    .catch(error => console.log('ERROR!', error));
+    .catch((error) => assert.isNotOk(error,'Promise error'));
   }
 
   useEffect(() => {

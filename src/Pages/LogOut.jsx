@@ -11,18 +11,14 @@ function LogOut() {
 
   const [success, setSuccess] = useState(false);
 
-  const user = async() => { 
-    try {
+  const user = async() => {
         const response = await fetch('http://localhost:4000/user', { 
             headers: {'Content-Type': 'application/json'}, 
             credentials: 'include' }
-        ); 
+        ).catch((error) => assert.isNotOk(error,'Promise error')); 
 
         const content = await response.json(); 
         setId(content._id);
-    } catch(err) {
-        console.log(err)
-    }
   }
 
   useEffect(() => {
@@ -30,7 +26,6 @@ function LogOut() {
   }, [id])
       
   const signOut = async () => {
-      try {
       await fetch("http://localhost:4000/logout", {
         method: "post",
         headers: {
@@ -38,10 +33,7 @@ function LogOut() {
               'Content-Type': 'application/json'
         },
         credentials: 'include',
-      })
-      } catch(err) {
-        console.log(err)
-      }
+      }).catch((error) => assert.isNotOk(error,'Promise error'));
   }
 
   const updateUser = async() => {
@@ -54,7 +46,7 @@ function LogOut() {
       setSuccess(false);
       return; 
     }
-    try {
+    
     await fetch(`http://localhost:4000/users/${id}`, {
       method: "PATCH",
       headers: {
@@ -65,12 +57,10 @@ function LogOut() {
         name: name,
         email: mail
       })
-    })
+    }).catch((error) => assert.isNotOk(error,'Promise error'));
     setSuccess(true)
-    } catch(err) {
-      console.log(err)
-    }
   }
+  
 
   return (
     <div className={Style.wrapper}>
