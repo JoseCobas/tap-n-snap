@@ -38,7 +38,7 @@ function Start() {
         {transition ? <button className={Style.btnChange} onClick={change}>SIGN IN</button> : <button className={Style.btn} onClick={change}>SIGN IN</button> }
       </DelayLink>
       <DelayLink delay={1200} to="/register">
-        {transition ? <button className={Style.btnChange} onClick={change}>SING UP</button> : <button className={Style.btn} onClick={change}>SIGN UP</button> }
+        {transition ? <button className={Style.btnChange} onClick={change}>SIGN UP</button> : <button className={Style.btn} onClick={change}>SIGN UP</button> }
       </DelayLink>
     </div>
   )

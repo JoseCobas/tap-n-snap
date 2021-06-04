@@ -90,8 +90,8 @@ function Login() {
         }
         <br />
         { transition ? 
-          <h4 className={Style.pChange}>Already have an account?<DelayLink delay={700} to='/register'><p className={Style.link} onClick={change}>Sing In</p></DelayLink></h4>
-          :<h4 className={Style.p}>Already have an account?<DelayLink delay={700} to='/register'><p className={Style.link} onClick={change}>Sing In</p></DelayLink></h4>
+          <h4 className={Style.pChange}>Don't have an account?<DelayLink delay={700} to='/register'><p className={Style.link} onClick={change}>Sign Up</p></DelayLink></h4>
+          :<h4 className={Style.p}>Don't have an account?<DelayLink delay={700} to='/register'><p className={Style.link} onClick={change}>Sign Up</p></DelayLink></h4>
         }
     </div>
   )
