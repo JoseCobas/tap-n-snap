@@ -124,7 +124,7 @@ function Chat({ match }) {
             <img src={'/uploads/' + topic.url} alt={topic.tags.join(' ')} />
             <div>
               { topic.location ? <Location value={topic.location} /> : null }
-              <p>{ topic.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
+              <p className={Style.pWrapper}>{ topic.tags.map(tag => <Tag key={Date.now() + Math.random()} value={tag} />) }</p>
               <p>By: {topic.user}</p>
             </div> 
           </div> ) :

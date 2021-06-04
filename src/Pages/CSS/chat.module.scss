@@ -31,6 +31,12 @@ $text-grey: #707070;
       padding-right: 10px;
     }
 
+    .pWrapper {
+      display: flex; 
+      flex-wrap: wrap; 
+      margin: 2px 0 !important;
+    }
+
     p {
       font-size: 14px;
       word-break: break-word;
