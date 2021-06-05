@@ -7,8 +7,13 @@ import { Link } from 'react-router-dom'
 import ReactPullToRefresh from 'react-pull-to-refresh'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
+
+
 function Home() {
-    const [newPosts, setNewPosts] = useState([]); 
+
+    const [newPosts, setNewPosts] = useState([]);
+
+    
 
     const [display, setDisplay] = useState(null); 
     const [searchValue, setSearchValue] = useState('');
@@ -64,30 +69,14 @@ function Home() {
 
     
 
-    // const fetchMoreData = () => {
-    //   // a fake async api call like which sends
-    //   // 2 more records in 1 sec
-    //   setTimeout(() => {
-    //     this.setState({
-    //       items: items.concat(Array.from({ length: 2 }))
-    //     });
-    //   }, 1000);
-    // };
-
     useEffect(() => fetchPosts(), [])
-
-    let [page, setPage] = useState(1)
     
 
     return display ? (
         <ReactPullToRefresh onRefresh={handleRefresh} className="wrapperRefresh">
             <Searchbar search={fetchFilteredPosts} searchValue={searchValue} setSearchValue={setSearchValue} />
             <div className={Style.postContainer}>
-              <InfiniteScroll
-                    dataLength={newPosts.length}
-                    next={() => setPage(page + 1)}
-                    hasMore={true}
-                    > 
+
                     {newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
                         <div key={post['_id']} className={Style.wrapper}>
                           <div className={Style.post}>
@@ -105,7 +94,7 @@ function Home() {
                               </div>
                               <div className={Style.flexTags}>
 
-                                {console.log(page)}
+                                {/* {console.log(page)} */}
 
                                 {/* {
                                 test ? <div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeartLiked} onClick={likePost}><i className="fas fa-heart"></i></div>
@@ -121,7 +110,7 @@ function Home() {
                         </div>
                       ))
                     }
-                    </InfiniteScroll>
+                    
                 </div>
         </ReactPullToRefresh>
     ) : null;
