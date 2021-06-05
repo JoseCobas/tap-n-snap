@@ -61,6 +61,45 @@ module.exports = app => {
     }
   }) // ------------------------------------
 
+  // --------- get all messages from DB ---------
+  app.get('/updateMessages', async (req, res) => {
+    try {
+      // get only the messages that match the room id
+      const messages = await Message.find(); 
+      res.send(messages);
+    } catch (error) {
+      res.send({ message: error })
+    }
+  }) // ------------------------------------
+
+  // Get specific message
+  app.get('/updateMessages/:messageId', async (req, res) => {
+    try {
+      const message = await Message.findById(req.params.messageId)
+      res.send(message)
+    } catch (error) {
+      res.send({ message: error })
+    }
+  })
+
+  // Update specific message
+  app.patch('/updateMessages/:messageId', async (req, res) => {
+    try {
+      const updatedMessage = await Message.updateOne(
+        { _id: req.params.messageId },
+        { $set: {
+          author: req.body.author
+          }
+        }
+      )
+      res.send(updatedMessage)
+    } catch (error) {
+      res.send({ message: error })
+    }
+  })
+    
+
+
   function broadcast(event, data) {
     // loop through all open connections and send
     // some data without closing the connection (res.write)

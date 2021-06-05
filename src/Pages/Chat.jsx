@@ -15,6 +15,7 @@ function Chat({ match }) {
   const [newMessage, setNewMessage] = useState('');
   const [allMessages, setAllMessages] = useState([]);
   const [name, setName] = useState('');
+  const [users, setUsers] = useState('');
 
   const user = async() => { 
     try {
@@ -25,6 +26,7 @@ function Chat({ match }) {
 
         const content = await response.json(); 
         setName(content.name);
+        setUsers(content._id);
     } catch(err) {
         console.log(err)
     }
@@ -71,6 +73,7 @@ function Chat({ match }) {
       body: JSON.stringify({
         text: newMessage,
         author: name,
+        user: users,
         room: topic._id
       })
     })
@@ -99,7 +102,6 @@ function Chat({ match }) {
 
     return sse;
   }
-
 
   useEffect(() => {
     user();
@@ -142,7 +144,7 @@ function Chat({ match }) {
 
       <div className={Style.chatSection}>
         {
-          allMessages.map(message => ( message.author == name ?
+          allMessages.map(message => ( message.user == users ?
             <div key={Math.random() + Date.now()} className={Style.messageRight}>
               <div className={Style.messageBox}>
                 <span>{message.author}</span>
