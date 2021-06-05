@@ -46,10 +46,12 @@ const login = (req, res, next) => {
                 if(result){
                     let token = jwt.sign({_id: user._id}, 'thisIsThePassword', {expiresIn: '12h'})
                     res.cookie('jwt', token,{
-                        httpOnly: true
+                        httpOnly: true,
+                        token
                     })  
                     res.json({
-                        message: 'Login Succesful!'
+                        message: 'Login Succesful!',
+                        token
                     }) 
                                       
                 }else{
@@ -60,7 +62,7 @@ const login = (req, res, next) => {
             })
         }else{
             res.json({
-                message: 'No user user found'
+                message: 'No user user found' 
             })
         }
     })
