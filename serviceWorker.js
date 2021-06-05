@@ -2,9 +2,7 @@ const cacheName = 'v1'
 
 const cacheAssets = [
   'index.html',
-  '/src/App.css',
   '/src/App.jsx'
-
 ]
 
 

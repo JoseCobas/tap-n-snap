@@ -80,7 +80,12 @@ function Chat({ match }) {
     setNewMessage(''); // Clear input field
   }
 
-  const startSSE = () => {
+  useEffect(() => {
+    user();
+    fetchData();
+  }, [id, name])
+
+  useEffect(() => {
     let sse = new EventSource('/api/sse');
 
     sse.addEventListener('connect', message => {
@@ -100,18 +105,15 @@ function Chat({ match }) {
       setAllMessages(messages => [...messages, data]);
     })
 
-    return sse;
-  }
+    sse.onerror = (error) => {
+      console.log(error)
+      sse.close()
+    }
 
-  useEffect(() => {
-    user();
-    fetchData();
-  }, [id, name])
-
-  useEffect(() => {
-    let sse = startSSE();
-
-    return () => sse.close(); 
+    return () => {
+      console.log(sse)
+      sse.close();
+    };
   }, [])
 
   return display ? (
@@ -166,7 +168,7 @@ function Chat({ match }) {
       <form onSubmit={postMessage}>
         <div className={Style.align} >
           <input placeholder="Message..." type="text" onChange={e => setNewMessage(e.target.value)} value={newMessage} />
-          <button type="submit">Send</button>
+          <button type="submit"><i className="fas fa-paper-plane"></i></button>
         </div>
       </form>
     </div>

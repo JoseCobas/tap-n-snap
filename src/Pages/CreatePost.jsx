@@ -147,7 +147,7 @@ const CreatePost = () => {
     const test = (e) => {
         setLocation(document.getElementById('searchInput').value)
         setMessage(true)
-        
+
         document.getElementById('searchInput').value = ""
     }
 
@@ -178,7 +178,7 @@ const CreatePost = () => {
                     <input className={Style.inputGeo} type="text" id="searchInput" placeholder="Search location..." onChange={e => setLocation(e.target.value)} />
                         <button type="button" className={Style.icon} onClick={test}><i className="fas fa-check"></i></button>
                     <hr />
-                    <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags" onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
+                    <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags..." onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
                         <button type="button" className={Style.icon} onClick={addTag}><i className="fas fa-check"></i></button>
                     <div className={Style.tagDiv}>
                         {

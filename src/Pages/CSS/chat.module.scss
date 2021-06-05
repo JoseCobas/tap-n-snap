@@ -174,7 +174,12 @@ $text-grey: #707070;
         background-color: #A371F7;
         color: white;
         font-family: 'Arvo', serif;
-        font-size: 16px;
+        font-size: 20px;
+
+        i {
+          margin-top: 4px;
+          margin-right: 4px;
+        }
       }
     }
   }

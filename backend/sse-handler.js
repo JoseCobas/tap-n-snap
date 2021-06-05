@@ -1,4 +1,7 @@
 let Message = require('./models/Message')
+const express = require('express')
+const app = express()
+app.use(express.json())
 
 module.exports = app => {
 
@@ -12,9 +15,10 @@ module.exports = app => {
     // listen for client disconnection
     // and remove the client's response
     // from the open connections list
-    req.on('close', () => { connections = connections.filter(openRes => openRes !== res)
+    req.on('close', () => { 
+      connections = connections.filter(openRes => openRes != res)
+      
       // message all open connections that a client disconnected
-
       broadcast('disconnect', {
         message: 'client disconnected' 
       })
@@ -30,7 +34,7 @@ module.exports = app => {
     // message all connected clients that this 
     // client connected
     broadcast('connect', {
-      message: 'client connected'
+      message: 'client connected ' + connections.length
     })
   })
 
@@ -48,6 +52,8 @@ module.exports = app => {
 
     // message all open client with new message
     broadcast('new-message', req.body)
+
+    res.send('ok')
   })
 
   // --------- get messages from DB ---------
@@ -97,8 +103,6 @@ module.exports = app => {
       res.send({ message: error })
     }
   })
-    
-
 
   function broadcast(event, data) {
     // loop through all open connections and send
@@ -110,7 +114,9 @@ module.exports = app => {
 
   // Heartbeat (send 'empty' events with 20 second delays)
   // helps keep the connection alive
-  setInterval(() => {
-    broadcast('heartbeat', new Date())
-  }, 20000)
+  setInterval(
+    () => connections.forEach(({ res }) =>
+      broadcast(res, 'heartbeat', new Date())),
+    20000
+  );
 };
