@@ -4,6 +4,8 @@ import Image from '../img/IMG_7468.png'
 import { Link } from 'react-router-dom' 
 import axios from 'axios'
 
+
+
 function Profile() { 
     const [visible, setVisible] = useState(false) 
     const [display, setDisplay] = useState(true)
@@ -20,7 +22,7 @@ function Profile() {
     const user = async() => { 
         try {
 
-            var data = '';
+      var data = '';
 
       var config = {
         method: 'get',

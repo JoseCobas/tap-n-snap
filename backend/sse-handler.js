@@ -1,4 +1,7 @@
 let Message = require('./models/Message')
+const express = require('express')
+const app = express()
+app.use(express.json())
 
 module.exports = app => {
 
@@ -12,9 +15,10 @@ module.exports = app => {
     // listen for client disconnection
     // and remove the client's response
     // from the open connections list
-    req.on('close', () => { connections = connections.filter(openRes => openRes !== res)
+    req.on('close', () => { 
+      connections = connections.filter(openRes => openRes != res)
+      
       // message all open connections that a client disconnected
-
       broadcast('disconnect', {
         message: 'client disconnected' 
       })
@@ -24,13 +28,13 @@ module.exports = app => {
     // and that we don't close the connection
     res.set({
       'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache, no-store, must-revalidate'
     })
 
     // message all connected clients that this 
     // client connected
     broadcast('connect', {
-      message: 'client connected'
+      message: 'client connected ' + connections.length
     })
   })
 
@@ -48,6 +52,8 @@ module.exports = app => {
 
     // message all open client with new message
     broadcast('new-message', req.body)
+
+    res.send('ok')
   })
 
   // --------- get messages from DB ---------
@@ -61,6 +67,43 @@ module.exports = app => {
     }
   }) // ------------------------------------
 
+  // --------- get all messages from DB ---------
+  app.get('/updateMessages', async (req, res) => {
+    try {
+      // get only the messages that match the room id
+      const messages = await Message.find(); 
+      res.send(messages);
+    } catch (error) {
+      res.send({ message: error })
+    }
+  }) // ------------------------------------
+
+  // Get specific message
+  app.get('/updateMessages/:messageId', async (req, res) => {
+    try {
+      const message = await Message.findById(req.params.messageId)
+      res.send(message)
+    } catch (error) {
+      res.send({ message: error })
+    }
+  })
+
+  // Update specific message
+  app.patch('/updateMessages/:messageId', async (req, res) => {
+    try {
+      const updatedMessage = await Message.updateOne(
+        { _id: req.params.messageId },
+        { $set: {
+          author: req.body.author
+          }
+        }
+      )
+      res.send(updatedMessage)
+    } catch (error) {
+      res.send({ message: error })
+    }
+  })
+
   function broadcast(event, data) {
     // loop through all open connections and send
     // some data without closing the connection (res.write)
@@ -71,7 +114,9 @@ module.exports = app => {
 
   // Heartbeat (send 'empty' events with 20 second delays)
   // helps keep the connection alive
-  setInterval(() => {
-    broadcast('heartbeat', new Date())
-  }, 20000)
+  setInterval(
+    () => connections.forEach(({ res }) =>
+      broadcast(res, 'heartbeat', new Date())),
+    20000
+  );
 };

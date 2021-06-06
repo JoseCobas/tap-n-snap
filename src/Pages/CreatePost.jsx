@@ -3,7 +3,6 @@ import Style from './CSS/createPost.module.scss';
 import { Link } from 'react-router-dom';
 import { scale } from '../utilities/scale';
 import Navbar from '../Components/Navbar';
-import DelayLink from 'react-delay-link'
 import { useHistory } from 'react-router-dom';
 
 const CreatePost = () => {
@@ -13,7 +12,7 @@ const CreatePost = () => {
 
     // State for geolocation coordinates
     const [lat, setLat] = useState('');
-    const [long, setLong] = useState(''); 
+    const [long, setLong] = useState('');
 
     const [message, setMessage] = useState(false);
     const [name, setName] = useState('');
@@ -43,7 +42,7 @@ const CreatePost = () => {
     }
 
     // Get coordinates for location
-    const getLocation =  () => {
+    const getLocation = () => {
         navigator.geolocation.getCurrentPosition(position => {
             setLat(position.coords.latitude)
             setLong(position.coords.longitude)
@@ -80,22 +79,31 @@ const CreatePost = () => {
         if (!imageData) { return; }
 
         const url = await scale(imageData, 900, 900, 0.75);
+
+        let post = {
+            url: url,
+            user: name,
+            author: author,
+            likes: 0,
+            tags: tags,
+            location: location
+        }
       
-        fetch("http://localhost:4000/posts", {
-            method: "post",
-            headers: {
+        if('serviceWorker' in navigator && 'SyncManager' in window) {
+
+            await IDB.add('sync-messages', post);
+
+            const sw = await navigator.serviceWorker.ready;
+            await sw.sync.register('sync-new-messages');
+        }else {
+            fetch('http://localhost:4000/posts', {
+              method: "post",
+              headers: { 
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${jwt}`
             },
-            body: JSON.stringify({
-                url: url,
-                user: name,
-                author: author,
-                likes: 0,
-                tags: tags,
-                location: location
-            })
+            body: JSON.stringify(post)
         })
 
         console.log('Photo uploaded!');
@@ -136,9 +144,24 @@ const CreatePost = () => {
         }
     }, [tags, active]);
 
+    function searchLocation() {
+        var autoComplete = new google.maps.places.Autocomplete((document.getElementById('searchInput')), {
+            types: ['geocode'],
+        })
+    }
+
     useEffect(() => {
         getLocation()
+
+        searchLocation()
     }, [long]);
+
+    const test = (e) => {
+        setLocation(document.getElementById('searchInput').value)
+        setMessage(true)
+
+        document.getElementById('searchInput').value = ""
+    }
 
     return (
         <div>
@@ -147,25 +170,28 @@ const CreatePost = () => {
             <div className={Style.wrapper}>
                 {imageData ? <img src={imageData} width="175" /> : <div className={Style.placeholder}><i className="fas fa-user fa-5x"></i></div>}
                 <div className={Style.buttonLayout}>
-                    <input type="file" name="file" accept="image/*" onChange={photoChosen} className={Style.inputFile} />
+                    <input type="file" name="file" accept="image/*" onChange={photoChosen} className={Style.inputFile}/>
                     {/* location ? <p key={location + Math.random()}>{location} <i className="fa fa-map-marker" aria-hidden="true"></i></p> : null */}
                     <input type="button" value="Take photo" className={Style.inputButton} onClick={redirect}/>
                 </div>
             </div>
             <div className={Style.tags}>
                 <div className={Style.centerDiv}>
-                  {
-                      message ? <div key={location + Math.random()}><p id="test" className={Style.location}>{location} </p></div>
-                              : <p id="test" className={Style.location}></p>
-                  }
+                    {
+                        message ? <div key={location + Math.random()}><p id="test" className={Style.location}>{location} </p></div>
+                                : <p id="test" className={Style.location}></p>
+                    }
                     <div className = {Style.getlocation}>
                         {
                           message ? <button type="button" className={Style.getLocation} onClick={removeLocation}>Remove</button> 
                                   : <button type="button"  className={Style.getLocation} onClick={fetchLocation}>Get Location</button>
                         }
                     </div>
-                    <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags" onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
-                    <button type="button" className={Style.icon} onClick={addTag}><i className="fas fa-check"></i></button>
+                    <input className={Style.inputGeo} type="text" id="searchInput" placeholder="Search location..." onChange={e => setLocation(e.target.value)} />
+                        <button type="button" className={Style.icon} onClick={test}><i className="fas fa-check"></i></button>
+                    <hr />
+                    <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags..." onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
+                        <button type="button" className={Style.icon} onClick={addTag}><i className="fas fa-check"></i></button>
                     <div className={Style.tagDiv}>
                         {
                             tags.map(tag => (

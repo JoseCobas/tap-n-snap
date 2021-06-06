@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale = 1.0, width=device-width, user-scalable=no">
     <script src="https://kit.fontawesome.com/47797051e6.js" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyDeFpkJImQ-Eynv9cGmod4NYR8nm8ZIw1Y"></script>
     <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
     <link rel="stylesheet" href="src/App.css">
@@ -14,6 +15,8 @@
   </head>
   <body>
     <div id="root"></div>
+    <script src="/src/utilities/idb-min.js"></script>
+    <script src="/src/utilities/IDB.js"></script>
     <script type="module" src="/src/main.jsx"></script>
 
     <script>
@@ -24,9 +27,8 @@
             .register('../serviceWorker.js')
             .then(reg => console.log('Service Worker: Registered'))
             .catch(err => console.log(`Service Worker: Error: ${err}`))
-  })
-}
-      
+        })
+      }
     </script>
   </body>
 </html>

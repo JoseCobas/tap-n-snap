@@ -18,6 +18,7 @@ function Chat({ match }) {
   const [newMessage, setNewMessage] = useState('');
   const [allMessages, setAllMessages] = useState([]);
   const [name, setName] = useState('');
+  const [users, setUsers] = useState('');
 
   const jwt = localStorage.getItem("token");
 
@@ -30,6 +31,7 @@ function Chat({ match }) {
 
         const content = await response.json(); 
         setName(content.name);
+        setUsers(content._id);
     } catch(err) {
         console.log(err)
     }
@@ -62,7 +64,7 @@ function Chat({ match }) {
     setDisplay(true);
   }
 
-  const postMessage = (e) => {
+  const postMessage = async (e) => {
     e.preventDefault();
 
     if(!newMessage) {
@@ -70,19 +72,28 @@ function Chat({ match }) {
       return;
     }
 
+    let message = {
+      text: newMessage,
+      author: name,
+      user: users,
+      room: topic._id
+    }
+
     fetch('/api/message', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: newMessage,
-        author: name,
-        room: topic._id
-      })
-    })
+      body: JSON.stringify(message)
+    });
+
     setNewMessage(''); // Clear input field
   }
 
-  const startSSE = () => {
+  useEffect(() => {
+    user();
+    fetchData();
+  }, [id, name])
+
+  useEffect(() => {
     let sse = new EventSource('/api/sse');
 
     sse.addEventListener('connect', message => {
@@ -102,19 +113,15 @@ function Chat({ match }) {
       setAllMessages(messages => [...messages, data]);
     })
 
-    return sse;
-  }
+    sse.onerror = (error) => {
+      console.log(error)
+      sse.close()
+    }
 
-
-  useEffect(() => {
-    user();
-    fetchData();
-  }, [id, name])
-
-  useEffect(() => {
-    let sse = startSSE();
-
-    return () => sse.close(); 
+    return () => {
+      console.log(sse)
+      sse.close();
+    };
   }, [])
 
   return display ? (
@@ -147,7 +154,7 @@ function Chat({ match }) {
 
       <div className={Style.chatSection}>
         {
-          allMessages.map(message => ( message.author == name ?
+          allMessages.map(message => ( message.user == users ?
             <div key={Math.random() + Date.now()} className={Style.messageRight}>
               <div className={Style.messageBox}>
                 <span>{message.author}</span>
@@ -169,7 +176,7 @@ function Chat({ match }) {
       <form onSubmit={postMessage}>
         <div className={Style.align} >
           <input placeholder="Message..." type="text" onChange={e => setNewMessage(e.target.value)} value={newMessage} />
-          <button type="submit">Send</button>
+          <button type="submit"><i className="fas fa-paper-plane"></i></button>
         </div>
       </form>
     </div>

@@ -8,20 +8,38 @@ function LogOut() {
   const [name, setName] = useState('');
   const [mail, setMail] = useState('');
   const [id, setId] = useState('');
+  const [posts, setPosts] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   const [success, setSuccess] = useState(false);
 
-  const user = async() => {
-        const response = await fetch('http://localhost:4000/user', { 
-            headers: {'Content-Type': 'application/json'}, 
-            credentials: 'include' }
-        ).catch((error) => assert.isNotOk(error,'Promise error')); 
+  const fetchPosts = async () => {
+    const res = await fetch('http://localhost:4000/posts');
+    const data = await res.json();
 
-        const content = await response.json(); 
-        setId(content._id);
+    setPosts(data);
+  }
+
+  const fetchMessages = async () => {
+    const res = await fetch('http://localhost:4000/updateMessages');
+    const data = await res.json();
+
+    setMessages(data);
+  }
+
+  const user = async() => {
+      const response = await fetch('http://localhost:4000/user', { 
+          headers: {'Content-Type': 'application/json'}, 
+          credentials: 'include' }
+      ).catch((error) => assert.isNotOk(error,'Promise error')); 
+
+      const content = await response.json(); 
+      setId(content._id);
   }
 
   useEffect(() => {
+    fetchPosts()
+    fetchMessages()
     user()
   }, [id])
       
@@ -44,8 +62,43 @@ function LogOut() {
 
     if (!mail) {
       setSuccess(false);
-      return; 
+      return;
     }
+
+    posts.map(post => post.author == id ?
+      fetch(`http://localhost:4000/posts/name/${post._id}`, {
+      method: "PATCH",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: name,
+      })
+    }) : null)
+
+    messages.map(message => message.user == id ?
+      fetch(`http://localhost:4000/updateMessages/${message._id}`, {
+      method: "PATCH",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        author: name,
+      })
+    }) : null)
+
+    fetch(`http://localhost:4000/posts/name/${id}`, { 
+      method: "PATCH",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: name,
+      })
+    })
     
     await fetch(`http://localhost:4000/users/${id}`, {
       method: "PATCH",

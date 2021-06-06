@@ -82,6 +82,7 @@ const user = async (req, res, next) => {
         const user = await User.findOne({_id: claims._id})
         const {password, ...data} = await user.toJSON()
 
+
         res.send(data)      
 }
 
