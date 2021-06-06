@@ -20,6 +20,8 @@
     <script type="module" src="/src/main.jsx"></script>
 
     <script>
+
+      //Check if sw are supported in browser
       if('serviceWorker' in navigator) {
         console.log('Service Worker Supported')
         window.addEventListener('load', () => {

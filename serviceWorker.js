@@ -3,12 +3,13 @@ importScripts('/src/utilities/IDB.js');
 
 const cacheName = 'v1'
 
+// Files to cache:
 const cacheAssets = [
   'index.html',
   '/src/App.jsx'
 ]
 
-
+// Call Install Event
 self.addEventListener('install', (e) => {
   console.log('Service Worker: Installed')
 
@@ -24,10 +25,10 @@ self.addEventListener('install', (e) => {
 
 })
 
-
+// Call Activate Event
 self.addEventListener('activate', (e) => {
   console.log('Service Worker: Activated')
-
+  // Remove unwanted caches
   e.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
@@ -42,6 +43,7 @@ self.addEventListener('activate', (e) => {
   )
 })
 
+// Call fetch event
 self.addEventListener('fetch', e => {
   if (!(e.request.url.indexOf('http') === 0)) return;
 
@@ -49,10 +51,13 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     fetch(e.request)
     .then(res => {
+      // Make copy/clone of response
       const resClone = res.clone();
+      // Open cache
       caches
         .open(cacheName)
         .then(cache => {
+          // Add response to cache
           cache.put(e.request, resClone)
         })
       return res
