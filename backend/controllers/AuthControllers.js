@@ -67,7 +67,7 @@ const login = (req, res, next) => {
 }
 
 const user = async (req, res, next) => {
-    
+    try {
         const cookie = req.cookies['jwt']
 
         const claims = jwt.verify(cookie, 'thisIsThePassword')
@@ -82,7 +82,9 @@ const user = async (req, res, next) => {
         const {password, ...data} = await user.toJSON()
 
         res.send(data)
-       
+    }catch (error) {
+        console.log("Error at Authcontroller.js, at const user --> " + error)
+    }
 }
 
 const logout = (req, res, next) => {

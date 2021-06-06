@@ -3,6 +3,8 @@ import Style from './CSS/profile.module.scss'
 import Image from '../img/IMG_7468.png' 
 import { Link } from 'react-router-dom' 
 
+
+
 function Profile() { 
     const [visible, setVisible] = useState(false) 
     const [display, setDisplay] = useState(null)
@@ -15,9 +17,11 @@ function Profile() {
 
     const user = async() => { 
         try {
-            const response = await fetch('http://localhost:4000/user', { 
-                headers: {'Content-Type': 'application/json'}, 
-                credentials: 'include' }
+            const response = await fetch('http://localhost:4000/user', {
+                headers: {'Content-Type': 'application/json',
+                          'Accept' : 'application/json'}, 
+                credentials: 'include',
+             }
             ); 
 
             const content = await response.json(); 

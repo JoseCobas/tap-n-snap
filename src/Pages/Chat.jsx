@@ -59,7 +59,7 @@ function Chat({ match }) {
     setDisplay(true);
   }
 
-  const postMessage = (e) => {
+  const postMessage = async (e) => {
     e.preventDefault();
 
     if(!newMessage) {
@@ -67,16 +67,49 @@ function Chat({ match }) {
       return;
     }
 
-    fetch('/api/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: newMessage,
-        author: name,
-        user: users,
-        room: topic._id
-      })
-    })
+
+
+    let message = {
+      text: newMessage,
+      author: name,
+      user: users,
+      room: topic._id
+    }
+
+    // sync messages with the service worker
+    if('serviceWorker' in navigator && 'SyncManager' in window) {
+      // store message in indexedDB, so the service worker
+      // gets access to it
+      await IDB.add('sync-messages', message);
+
+      // tell the service worker that there's messages
+      // waiting to be sent to the server
+      const sw = await navigator.serviceWorker.ready;
+      await sw.sync.register('sync-new-messages');
+    }
+    // or send message manually
+    else {
+      fetch('/api/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(message)
+      });
+    }
+
+
+
+    // fetch('/api/message', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     text: newMessage,
+    //     author: name,
+    //     user: users,
+    //     room: topic._id
+    //   })
+    // });
+
+
     setNewMessage(''); // Clear input field
   }
 
