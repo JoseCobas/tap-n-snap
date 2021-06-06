@@ -12,6 +12,7 @@ function Login() {
 
   const [transition, setTransition] = useState(false)
   const [transitionImg, setTransitionImg] = useState(false)
+  const [jwt, setJwt] = useState()
 
   const change = () => {
     setTransition(true)
@@ -42,6 +43,8 @@ function Login() {
       console.log(data.message)
       
       setCorrectDetails(true);
+      localStorage.setItem("token", data.token);
+      setJwt(data.token)
       if (data.message === 'Login Succesful!') {
         setCorrectDetails(false);
         setTransition(true)
@@ -58,7 +61,7 @@ function Login() {
     setCorrectDetails(false)
   }, [])
 
-  return isLoggedIn ? <Redirect to="/home" /> : ( // conditional rendering with react (with ternary operators) <--
+  return isLoggedIn ? <Redirect to={`/home/${jwt}`} /> : ( // conditional rendering with react (with ternary operators) <--
     <div className={Style.wrapper}>
         { transitionImg ? <img className={Style.imgChange} src={logoImg} /> : <img className={Style.img} src={logoImg} />}
         {
