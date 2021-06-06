@@ -10,8 +10,8 @@ function Post({match}) {
     const [likedOrNot, setLikedOrNot] = useState(false);
     
     const fetchPost = async () => {
-        const res = await fetch(`http://localhost:4000/posts/${match.params.id}`);
-        const data = await res.json();
+      const res = await fetch(`http://localhost:4000/posts/${match.params.id}`);
+      const data = await res.json();
 
         setPost(data);
         setDisplay(true);
