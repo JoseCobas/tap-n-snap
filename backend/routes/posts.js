@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-// Get posts filtered by tags
+// Get posts filtered by tags and location
 router.get('/filter/:search', async (req, res) => {
   try {
     const posts = await Post.find({ 
@@ -63,6 +63,22 @@ router.patch('/:postId', async (req, res) => {
       { $set: {
         likes: req.body.likes,
         } 
+      }
+    )
+    res.send(updatedPost)
+  } catch (error) {
+    res.send({ message: error })
+  }
+})
+
+// Update post name
+router.patch('/name/:postId', async (req, res) => {
+  try {
+    const updatedPost = await Post.updateOne(
+      { _id: req.params.postId },
+      { $set: {
+        user: req.body.user
+        }
       }
     )
     res.send(updatedPost)
