@@ -24,6 +24,8 @@ const CreatePost = () => {
     const [newTag, setNewTag] = useState('');
     const [tags, setTags] = useState([]);
 
+    const jwt = localStorage.getItem("token")
+
     let history = useHistory();
 
     const photoChosen = () => {
@@ -62,7 +64,7 @@ const CreatePost = () => {
 
     const user = async() => {
         const response = await fetch('http://localhost:4000/user', {
-              headers: {'Content-Type': 'application/json'},
+              headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}`},
               credentials: 'include'
         });
   
@@ -98,27 +100,11 @@ const CreatePost = () => {
               method: "post",
               headers: { 
                 'Accept': 'application/json',
-                'Content-Type': 'application/json' 
-              },
-              body: JSON.stringify(post)
-            });
-        }
-
-        // fetch("http://localhost:4000/posts", {
-        //     method: "post",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         url: url,
-        //         user: name,
-        //         author: author,
-        //         likes: 0,
-        //         tags: tags,
-        //         location: location
-        //     })
-        // })
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+            },
+            body: JSON.stringify(post)
+        })
 
         console.log('Photo uploaded!');
         window.imageSrc = null; // Removes taken pic from window

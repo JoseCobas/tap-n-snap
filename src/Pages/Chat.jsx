@@ -4,6 +4,9 @@ import Location from '../Components/Location';
 import Tag from '../Components/Tag';
 import Style from './CSS/chat.module.scss';
 
+
+
+
 function Chat({ match }) {
 
   const id = match.params.id;
@@ -17,10 +20,12 @@ function Chat({ match }) {
   const [name, setName] = useState('');
   const [users, setUsers] = useState('');
 
+  const jwt = localStorage.getItem("token");
+
   const user = async() => { 
     try {
         const response = await fetch('http://localhost:4000/user', { 
-            headers: {'Content-Type': 'application/json'}, 
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` }, 
             credentials: 'include' }
         ); 
 

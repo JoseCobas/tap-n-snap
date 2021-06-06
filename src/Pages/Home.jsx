@@ -3,13 +3,13 @@ import Searchbar from '../Components/Searchbar'
 import Location from '../Components/Location'
 import Tag from '../Components/Tag'
 import Style from './CSS/home.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ReactPullToRefresh from 'react-pull-to-refresh'
 // import InfiniteScroll from 'react-infinite-scroll-component'
 
 function Home() {
     const [newPosts, setNewPosts] = useState([]); 
-
+    const jwt = localStorage.getItem("token")
     const [display, setDisplay] = useState(null); 
     const [searchValue, setSearchValue] = useState('');
     // const [likedOrNot, setLikedOrNot] = useState(false);
@@ -53,6 +53,7 @@ function Home() {
       fetch(`http://localhost:4000/posts/${id}`, { 
         method: "PATCH",
         headers: {
+          'Authorization': `Bearer ${jwt}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
