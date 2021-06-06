@@ -5,7 +5,9 @@ import Tag from '../Components/Tag'
 import Style from './CSS/home.module.scss'
 import { Link, useParams } from 'react-router-dom'
 import ReactPullToRefresh from 'react-pull-to-refresh'
-// import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from 'react-infinite-scroll-component'
+
+
 
 function Home() {
     const [newPosts, setNewPosts] = useState([]); 
@@ -63,34 +65,17 @@ function Home() {
       })
     }
 
-    // const fetchMoreData = () => {
-    //   // a fake async api call like which sends
-    //   // 2 more records in 1 sec
-    //   setTimeout(() => {
-    //     this.setState({
-    //       items: items.concat(Array.from({ length: 2 }))
-    //     });
-    //   }, 1000);
-    // };
+    
 
     useEffect(() => fetchPosts(), [])
+    
 
     return display ? (
         <ReactPullToRefresh onRefresh={handleRefresh} className="wrapperRefresh">
             <Searchbar search={fetchFilteredPosts} searchValue={searchValue} setSearchValue={setSearchValue} />
             <div className={Style.postContainer}>
-              {/* <InfiniteScroll
-                    dataLength={items.length}
-                    next={fetchMoreData}
-                    style={{ display: 'flex', flexDirection: 'column-reverse' }} //To put endMessage and loader to the top.
-                    inverse={true}
-                    hasMore={true}
-                    loader={<h4>Loading...</h4>}
-                    scrollableTarget="scrollableDiv"
-                  > 
-                    {items.map((i, index) => (*/}
-                    {
-                    newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
+
+                    {newPosts.sort((a, b) => a.date > b.date ? -1 : 1).map(post => (
                         <div key={post['_id']} className={Style.wrapper}>
                           <div className={Style.post}>
                           <div>
@@ -107,7 +92,7 @@ function Home() {
                               </div>
                               <div className={Style.flexTags}>
 
-                                {/* Add something similar if enough time */}
+                                {/* {console.log(page)} */}
 
                                 {/* {
                                 test ? <div name={post.likes} id={post._id + " " + post.likes} className={Style.iconHeartLiked} onClick={likePost}><i className="fas fa-heart"></i></div>
@@ -123,6 +108,7 @@ function Home() {
                         </div>
                       ))
                     }
+                    
                 </div>
         </ReactPullToRefresh>
     ) : null;
