@@ -6,14 +6,16 @@ const PostSchema = Schema({
     type: String,
     required: true
   },
-  user: {
-    type: String,
-    required: true
-  },
-  author: {
-    type: String,
-    required: true
-  },
+  // user: {
+  //   type: String,
+  //   required: true
+  // },
+  user: { type: Schema.Types.String, ref: 'User', required: true },
+  // author: {
+  //   type: String,
+  //   required: true
+  // },
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   likes: {
     type: Number,
     required: true
@@ -22,7 +24,9 @@ const PostSchema = Schema({
     type: Date,
     default: Date.now,
   },
-  location: String,
+  location: {
+    type: String
+  },
   tags: [String]
 })
 

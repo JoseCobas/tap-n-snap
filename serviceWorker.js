@@ -1,10 +1,11 @@
+importScripts('/src/utilities/idb-min.js');
+importScripts('/src/utilities/IDB.js');
+
 const cacheName = 'v1'
 
 const cacheAssets = [
   'index.html',
-  '/src/App.css',
   '/src/App.jsx'
-
 ]
 
 
@@ -60,3 +61,31 @@ self.addEventListener('fetch', e => {
 
   )
 })
+
+// 'sync' triggers when the service worker has
+// access to the network
+self.addEventListener('sync', evt => {
+  if(evt.tag === 'sync-new-messages') {
+    evt.waitUntil(onBackgroundSync());
+  }
+});
+
+async function onBackgroundSync() {
+  // get saved messages
+  let posts = await IDB.getAll('sync-messages');
+
+  // loop messages and send to server
+  for (let post of posts) {
+    let res = await fetch('http://localhost:4000/posts', {
+      method: "post",
+      headers: { 'Accept': 'application/json',
+      'Content-Type': 'application/json' },
+      body: JSON.stringify(post)
+    });
+
+    // when a message has been posted successfully 
+    // we remove that message from indexedDB
+    // so we don't resend it every time we go online
+    res.ok && await IDB.remove('sync-messages', post.uuid);
+  }
+}
