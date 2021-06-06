@@ -77,22 +77,48 @@ const CreatePost = () => {
         if (!imageData) { return; }
 
         const url = await scale(imageData, 900, 900, 0.75);
+
+        let post = {
+            url: url,
+            user: name,
+            author: author,
+            likes: 0,
+            tags: tags,
+            location: location
+        }
       
-        fetch("http://localhost:4000/posts", {
-            method: "post",
-            headers: {
+        if('serviceWorker' in navigator && 'SyncManager' in window) {
+
+            await IDB.add('sync-messages', post);
+
+            const sw = await navigator.serviceWorker.ready;
+            await sw.sync.register('sync-new-messages');
+        }else {
+            fetch('http://localhost:4000/posts', {
+              method: "post",
+              headers: { 
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                url: url,
-                user: name,
-                author: author,
-                likes: 0,
-                tags: tags,
-                location: location
-            })
-        })
+                'Content-Type': 'application/json' 
+              },
+              body: JSON.stringify(post)
+            });
+        }
+
+        // fetch("http://localhost:4000/posts", {
+        //     method: "post",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         url: url,
+        //         user: name,
+        //         author: author,
+        //         likes: 0,
+        //         tags: tags,
+        //         location: location
+        //     })
+        // })
 
         console.log('Photo uploaded!');
         window.imageSrc = null; // Removes taken pic from window

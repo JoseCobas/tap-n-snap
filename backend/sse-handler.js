@@ -28,7 +28,7 @@ module.exports = app => {
     // and that we don't close the connection
     res.set({
       'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache, no-store, must-revalidate'
     })
 
     // message all connected clients that this 

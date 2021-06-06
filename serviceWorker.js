@@ -72,19 +72,20 @@ self.addEventListener('sync', evt => {
 
 async function onBackgroundSync() {
   // get saved messages
-  let messages = await IDB.getAll('sync-messages');
+  let posts = await IDB.getAll('sync-messages');
 
   // loop messages and send to server
-  for (let message of messages) {
-    let res = await fetch('/api/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(message)
+  for (let post of posts) {
+    let res = await fetch('http://localhost:4000/posts', {
+      method: "post",
+      headers: { 'Accept': 'application/json',
+      'Content-Type': 'application/json' },
+      body: JSON.stringify(post)
     });
 
     // when a message has been posted successfully 
     // we remove that message from indexedDB
     // so we don't resend it every time we go online
-    res.ok && await IDB.remove('sync-messages', message.uuid);
+    res.ok && await IDB.remove('sync-messages', post.uuid);
   }
 }
