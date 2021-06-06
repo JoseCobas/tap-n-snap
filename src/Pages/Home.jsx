@@ -1,17 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Searchbar from '../Components/Searchbar'
 import Location from '../Components/Location'
 import Tag from '../Components/Tag'
 import Style from './CSS/home.module.scss'
 import { Link } from 'react-router-dom'
 import ReactPullToRefresh from 'react-pull-to-refresh'
-import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from '../Components/InfiniteScrollPaging'
+
 
 
 
 function Home() {
 
     const [newPosts, setNewPosts] = useState([]);
+    // const [pageNumber, setPageNumber] = useState(1);
+
+    // const {
+    //   books,
+    //   hasMore,
+    //   loading,
+    //   error
+    // } = InfiniteScroll(pageNumber)
 
     
 
@@ -23,9 +32,9 @@ function Home() {
     const fetchPosts = async () => {
         const res = await fetch('http://localhost:4000/posts');
         const data = await res.json();
-
         setNewPosts(data);
         setDisplay(true);
+        console.log(data)
     }
 
     const fetchFilteredPosts = async (value) => {
@@ -39,8 +48,10 @@ function Home() {
 
     function handleRefresh() {
         const success = true
+        let siteReloadCounter = 0;
         if (success) {
           setTimeout(function(){ window.location.reload(false); }, 700);
+          siteReloadCounter ++;
         } else {
           console.log("Scroll refresh failed")
         }
@@ -70,6 +81,8 @@ function Home() {
     
 
     useEffect(() => fetchPosts(), [])
+
+  
     
 
     return display ? (
