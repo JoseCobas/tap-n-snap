@@ -9,15 +9,13 @@ const videoConstraints = {
 
 const CameraPage = () => {
   const webcamRef = React.useRef(null);
-  const [imgSrc, setImgSrc] = React.useState(null);
-
+  
+  // Take picture and store it for use on another page
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
-    setImgSrc(imageSrc);
     window.imageSrc = imageSrc;
-  }, [webcamRef, setImgSrc]);
+  }, [webcamRef]);
   
-
   return (
     <div className={Style.wrapper}>
       <Webcam
@@ -26,18 +24,15 @@ const CameraPage = () => {
         screenshotFormat="image/jpeg/jpg"
         videoConstraints={videoConstraints}
         audio={false} // mute sound
-       
       />
       <div className={Style.buttonContainer}>
-
         <div className={Style.buttonDiv}>
           <Link to="/createPost">
             <button className={Style.cameraButton} onClick={capture}></button>
           </Link>
           <Link to="/home" className={Style.iHelper}>
-                <i className="fas fa-chevron-left"></i>
-            </Link>
-          {/* {imgSrc && <img className={Style.previewImage} src={imgSrc} />} */}
+            <i className="fas fa-chevron-left"></i>
+          </Link>
         </div>
       </div>
     </div>

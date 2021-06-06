@@ -23,9 +23,6 @@ const CreatePost = () => {
     // Tag states
     const [newTag, setNewTag] = useState('');
     const [tags, setTags] = useState([]);
-
-    const jwt = localStorage.getItem("token")
-
     let history = useHistory();
 
     const photoChosen = () => {
@@ -62,9 +59,10 @@ const CreatePost = () => {
         setMessage(true)
     }
 
+    // Get user from saved token
     const user = async() => {
         const response = await fetch('http://localhost:4000/user', {
-              headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}`},
+              headers: {'Content-Type': 'application/json'},
               credentials: 'include'
         });
   
@@ -89,6 +87,8 @@ const CreatePost = () => {
             location: location
         }
       
+        // if offline, add photo to indexedDB
+        // else upload to database
         if('serviceWorker' in navigator && 'SyncManager' in window) {
 
             await IDB.add('sync-messages', post);
@@ -104,7 +104,7 @@ const CreatePost = () => {
                 'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify(post)
-        })
+        })}
 
         console.log('Photo uploaded!');
         window.imageSrc = null; // Removes taken pic from window
@@ -112,8 +112,10 @@ const CreatePost = () => {
         const timer = setTimeout(() => {
             history.push('/home')
         }, 300);
+        
     }
 
+    // Add tag to HTML and array
     const addTag = () => {
         const boxValue = document.getElementById('tagBox').value;
 
@@ -123,12 +125,14 @@ const CreatePost = () => {
         setNewTag('');
     }
 
+    // Remove tag from HTML and tag array
     function removeTag(tagToRemove) {
         setTags(tags => (
             tags.filter(tag => tag !== tagToRemove))
         )
     }
 
+    // Go to camera to take a photo
     function redirect() {
         history.push('/camera')
         window.imageSrc = null;
@@ -144,6 +148,7 @@ const CreatePost = () => {
         }
     }, [tags, active]);
 
+    // Search for location via a search field with google maps places api
     function searchLocation() {
         var autoComplete = new google.maps.places.Autocomplete((document.getElementById('searchInput')), {
             types: ['geocode'],
@@ -156,7 +161,7 @@ const CreatePost = () => {
         searchLocation()
     }, [long]);
 
-    const test = (e) => {
+    const addLocation = (e) => {
         setLocation(document.getElementById('searchInput').value)
         setMessage(true)
 
@@ -168,18 +173,19 @@ const CreatePost = () => {
         <Navbar />
         <form name="textForm" className={Style.form}>
             <div className={Style.wrapper}>
+                {/* If no image is present add placeholder */}
                 {imageData ? <img src={imageData} width="175" /> : <div className={Style.placeholder}><i className="fas fa-user fa-5x"></i></div>}
                 <div className={Style.buttonLayout}>
                     <input type="file" name="file" accept="image/*" onChange={photoChosen} className={Style.inputFile}/>
-                    {/* location ? <p key={location + Math.random()}>{location} <i className="fa fa-map-marker" aria-hidden="true"></i></p> : null */}
                     <input type="button" value="Take photo" className={Style.inputButton} onClick={redirect}/>
                 </div>
             </div>
             <div className={Style.tags}>
                 <div className={Style.centerDiv}>
+                    {/* If a location is present show it and change button */}
                     {
-                        message ? <div key={location + Math.random()}><p id="test" className={Style.location}>{location} </p></div>
-                                : <p id="test" className={Style.location}></p>
+                        message ? <div key={location + Math.random()}><p className={Style.location}>{location} </p></div>
+                                : <p className={Style.location}></p>
                     }
                     <div className = {Style.getlocation}>
                         {
@@ -188,7 +194,7 @@ const CreatePost = () => {
                         }
                     </div>
                     <input className={Style.inputGeo} type="text" id="searchInput" placeholder="Search location..." onChange={e => setLocation(e.target.value)} />
-                        <button type="button" className={Style.icon} onClick={test}><i className="fas fa-check"></i></button>
+                        <button type="button" className={Style.icon} onClick={addLocation}><i className="fas fa-check"></i></button>
                     <hr />
                     <input id="tagBox" maxLength="15" type="text" placeholder="Enter tags..." onChange={e => setNewTag(e.target.value)} value={newTag} autoComplete="off"/>
                         <button type="button" className={Style.icon} onClick={addTag}><i className="fas fa-check"></i></button>
@@ -211,7 +217,7 @@ const CreatePost = () => {
             </Link>
         </form>
         </div>
-    )}
+    )
 }
 
 export default CreatePost;

@@ -4,11 +4,7 @@ import Location from '../Components/Location';
 import Tag from '../Components/Tag';
 import Style from './CSS/chat.module.scss';
 
-
-
-
 function Chat({ match }) {
-
   const id = match.params.id;
   const type = match.params.type;
 
@@ -22,6 +18,7 @@ function Chat({ match }) {
 
   const jwt = localStorage.getItem("token");
 
+  // Get user from saved login token
   const user = async() => { 
     try {
         const response = await fetch('http://localhost:4000/user', { 
@@ -64,6 +61,7 @@ function Chat({ match }) {
     setDisplay(true);
   }
 
+  // Post message to database
   const postMessage = async (e) => {
     e.preventDefault();
 
@@ -93,6 +91,7 @@ function Chat({ match }) {
     fetchData();
   }, [id, name])
 
+  // Add SSE and remove
   useEffect(() => {
     let sse = new EventSource('/api/sse');
 

@@ -4,8 +4,6 @@ import Image from '../img/IMG_7468.png'
 import { Link } from 'react-router-dom' 
 import axios from 'axios'
 
-
-
 function Profile() { 
     const [visible, setVisible] = useState(false) 
     const [display, setDisplay] = useState(true)
@@ -117,7 +115,7 @@ function Profile() {
     }, [visible, name, id]) 
                         
     return display ? ( 
-    <div> {loading ? <div ><p style={{color: 'white', textAlign: 'center', fontSize: '24px', paddingTop: '200px'}}>Loading.....</p></div> : (
+    <div>
         <>
         <div className={`${ visible ? Style.iHelperSmall : Style.iHelper}`}> 
         <Link to="/logout"> <i className="fas fa-cog fa-2x"></i> </Link> 
@@ -137,7 +135,7 @@ function Profile() {
                 </Link> : null
               ))
             }
-        </div></> )}
+        </div></>
     </div> 
     ) : null
 } 
