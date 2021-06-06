@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Style from './CSS/footer.module.scss'
+
+//A scroll-to-top-btn appears on the footer (navbar) when the user has scrolled 200px or more of content.
   
 const ScrollButton = () => {
   const [visible, setVisible] = useState(false)
