@@ -211,8 +211,7 @@ const CreatePost = () => {
             </Link>
         </form>
         </div>
-        
-    )
+    )}
 }
 
 export default CreatePost;
